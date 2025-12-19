@@ -1,0 +1,1812 @@
+<!--
+Meridian — Patch Notes (DETAILED_IMPLEMENTATION_BRIEF)
+Added:
+- Image 1 background texture layer (assets/ai-flow-bg-1.png) with heavy overlay
+- Half-globe wireframe behind hero card (bottom-emerging, masked + responsive)
+- Hero visuals: topographic contour lines + subtle half-orb (globe-like) anchor behind the hero card
+- Proof section Visual Proof deliverable panels (inline SVG)
+- Page-level subtle texture + section rhythm refinements
+- Card/button micro-lift + refined depth (reduced-motion safe)
+- Semantic IA + anchored sections: hero, trust, services, process, proof, packages, faq, final-cta, contact
+- Skip-to-content link, improved landmarks, accessible mobile nav (<details>)
+- Conversion hero: eyebrow, subhead, two CTAs, mini-trust bullets
+- Trust strip (capability pills) + credibility bullets (no fake logos)
+- Services: 4 richer cards w/ bullets + deliverables + inline CTA
+- Process: 4-step timeline (01–04) + “What you get” box
+- Proof: 3 mini case studies with modest claims + integrity note
+- Engagements: Starter + Systems tiers (no dollar pricing)
+- FAQ: <details>/<summary> accordion with plus/minus indicators
+- Final CTA band
+- Contact form: labels, helper text, honeypot, aria-live status, graceful fallback when endpoint unset
+- SEO + social meta (OG/Twitter) + Organization JSON-LD
+
+Changed:
+- Hero visual layering/overflow adjusted to integrate half-globe cleanly
+- Added topographic contour-line hero background (Option C)
+- Visual system to reduce “blank/boring”: alternating section surfaces, stronger hierarchy, varied rhythm, subtle depth and dividers
+- Buttons and card system for premium scanability; consistent padding/spacing across breakpoints
+- Header logo sizing via clamp() and stable header height; improved focus states
+
+Fixed:
+- Decorative layers are aria-hidden and do not capture pointer events
+- Accessibility: focus-visible styles, tap targets, reduced-motion handling, placeholder-only inputs removed
+- Form behavior: safe no-endpoint state with helpful message + direct email link; disables while sending; silent honeypot
+- CSS cleanup: fixed malformed hero-content rule and media query braces to prevent rendering glitches
+-->
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#0F0F12" />
+
+  <title>Meridian — Websites & Automations</title>
+  <meta name="description" content="Meridian builds premium websites and practical automations that remove friction—so your business runs cleaner, faster, and with fewer mistakes." />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Meridian — Websites & Automations" />
+  <meta property="og:description" content="Premium websites and practical automations that remove friction—so your business runs cleaner, faster, and with fewer mistakes." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="assets/meridian-wordmark.png" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Meridian — Websites & Automations" />
+  <meta name="twitter:description" content="Premium websites and practical automations that remove friction—so your business runs cleaner, faster, and with fewer mistakes." />
+  <meta name="twitter:image" content="assets/meridian-wordmark.png" />
+
+  <style>
+    :root{
+      --bg:#0F0F12;
+
+      --text:rgba(255,255,255,0.92);
+      --muted:rgba(255,255,255,0.66);
+      --soft:rgba(255,255,255,0.46);
+
+      --gold:#C9A24D;
+      --gold_soft:rgba(201,162,77,0.22);
+
+      --panel:rgba(255,255,255,0.06);
+      --panel2:rgba(255,255,255,0.04);
+
+      --border:rgba(255,255,255,0.10);
+      --border2:rgba(255,255,255,0.06);
+
+      --shadow:0 18px 52px rgba(0,0,0,0.45);
+
+      --radius:18px;
+      --radius2:28px;
+
+      --max:1120px;
+      --pad:22px;
+
+      --sans: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      --serif: Georgia, "Times New Roman", serif;
+
+      --tap:44px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      position:relative;
+      isolation:isolate;
+      font-family:var(--sans);
+      background:
+        radial-gradient(900px 520px at 70% -10%, rgba(201,162,77,0.10), transparent 45%),
+        radial-gradient(700px 400px at 18% 12%, rgba(255,255,255,0.04), transparent 55%),
+        var(--bg);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      text-rendering:optimizeLegibility;
+    }
+
+    /* Subtle page texture (prevents 'AI template' flatness) */
+    
+body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      background:
+        radial-gradient(1200px 800px at 30% 20%, rgba(255,255,255,0.028), transparent 55%),
+        radial-gradient(1000px 700px at 80% 70%, rgba(201,162,77,0.022), transparent 60%);
+      background-size: auto, auto;
+      background-position: 0 0, 0 0;
+      background-repeat: no-repeat, no-repeat;
+      opacity:1;
+      mix-blend-mode:normal;
+      z-index:-1;
+    }
+
+    /* Micro-interactions (respect reduced motion) */
+    .card, .vp-panel{
+      transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+    }
+    .card:hover, .vp-panel:hover{
+      transform: translateY(-2px);
+      border-color: rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.055);
+    }
+    .card--primary:hover{
+      border-color: rgba(201,162,77,0.46);
+      background: linear-gradient(180deg, rgba(201,162,77,0.12), rgba(255,255,255,0.045));
+    }
+    @media (prefers-reduced-motion: reduce){
+      .card, .vp-panel{ transition:none; }
+      .card:hover, .vp-panel:hover{ transform:none; }
+    }
+
+    a{color:inherit;text-decoration:none}
+    a:focus-visible,
+    button:focus-visible,
+    summary:focus-visible,
+    input:focus-visible,
+    textarea:focus-visible{
+      outline:2px solid rgba(201,162,77,0.85);
+      outline-offset:3px;
+    }
+    ::selection{background:rgba(201,162,77,0.22)}
+
+    /* Skip link */
+    .skip{
+      position:absolute;
+      left:-999px;
+      top:10px;
+      padding:10px 14px;
+      background:rgba(255,255,255,0.08);
+      border:1px solid var(--border);
+      border-radius:12px;
+      color:var(--text);
+      z-index:9999;
+    }
+    .skip:focus{left:10px}
+
+    /* Container + section rhythm */
+    .container{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:0 var(--pad);
+    }
+
+    .section{
+      padding:96px 0;
+      border-top:1px solid var(--border2);
+    }
+    .section--first{
+      padding-top:72px;
+      border-top:none;
+    }
+    .section--surface{
+      background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+    }
+    .section--tight{
+      padding:72px 0;
+    }
+
+
+    /* Flow band (Image 1) — adds human-made depth without clutter */
+    .flow-band{
+      position:relative;
+      height:220px;
+      border-top:1px solid var(--border2);
+      border-bottom:1px solid var(--border2);
+      background-image:
+        linear-gradient(180deg, rgba(15,15,18,0.88), rgba(15,15,18,0.88)),
+        url('assets/ai-flow-bg-1.png');
+      background-size: cover, cover;
+      background-position: center, center;
+      background-repeat:no-repeat, no-repeat;
+      overflow:hidden;
+    }
+    /* Edge fade so it feels integrated */
+    .flow-band::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      background:
+        linear-gradient(180deg, rgba(15,15,18,1) 0%, rgba(15,15,18,0) 22%, rgba(15,15,18,0) 78%, rgba(15,15,18,1) 100%),
+        radial-gradient(900px 240px at 50% 50%, rgba(255,255,255,0.05), transparent 60%);
+      opacity:1;
+    }
+    @media (max-width: 900px){
+      .flow-band{ height:180px; }
+    }
+    @media (max-width: 640px){
+      .flow-band{ height:150px; }
+    }
+
+    @media (max-width: 900px){
+      .section{padding:72px 0}
+      .section--first{padding-top:56px}
+      :root{ --pad:18px; }
+    }
+    @media (max-width: 640px){
+      .section{padding:56px 0}
+      .section--tight{padding:44px 0}
+    }
+
+    /* Type system */
+    .eyebrow{
+      font-size:12px;
+      letter-spacing:0.14em;
+      text-transform:uppercase;
+      color:rgba(201,162,77,0.92);
+    }
+
+    h1{
+      font-family:var(--serif);
+      font-size:clamp(2.2rem, 4.2vw, 3.5rem);
+      line-height:1.04;
+      letter-spacing:-0.02em;
+      margin:14px 0 14px 0;
+      max-width:18ch;
+    }
+
+    h2{
+      font-family:var(--serif);
+      font-size:clamp(1.45rem, 2.4vw, 2.0rem);
+      line-height:1.12;
+      margin:0 0 12px 0;
+      letter-spacing:-0.01em;
+    }
+
+    h3{
+      font-size:13px;
+      letter-spacing:0.14em;
+      text-transform:uppercase;
+      margin:0 0 10px 0;
+      color:rgba(255,255,255,0.86);
+    }
+
+    p{
+      margin:0;
+      position:relative;
+      isolation:isolate;
+      color:var(--muted);
+      line-height:1.65;
+      font-size:16px;
+    }
+    .lead{
+      max-width:72ch;
+      font-size:18px;
+      color:rgba(255,255,255,0.70);
+      line-height:1.65;
+      margin-top:8px;
+    }
+    @media (max-width:640px){
+      .lead{font-size:16px}
+    }
+
+    /* Header */
+    header{
+      position:sticky;
+      top:0;
+      z-index:50;
+      background:rgba(15,15,18,0.92);
+      backdrop-filter:blur(8px);
+      border-bottom:1px solid var(--border2);
+    }
+
+    .header-inner{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      min-height:72px; /* stable header height */
+      gap:18px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      min-height:var(--tap);
+      padding:10px 0;
+    }
+
+    .brand img{
+      height:clamp(40px, 4.2vw, 52px); /* readable at all breakpoints */
+      width:auto;
+      display:block;
+      max-height:52px;
+    }
+
+    /* Desktop nav */
+    .nav-desktop{
+      display:flex;
+      gap:18px;
+      align-items:center;
+    }
+    .nav-desktop a{
+      min-height:var(--tap);
+      display:flex;
+      align-items:center;
+      padding:0 10px;
+      border-radius:999px;
+      color:rgba(255,255,255,0.70);
+      font-size:13px;
+      letter-spacing:0.08em;
+      text-transform:uppercase;
+    }
+    .nav-desktop a:hover{
+      color:rgba(255,255,255,0.92);
+      background:rgba(255,255,255,0.04);
+    }
+
+    /* Mobile nav via details/summary (accessible, minimal JS) */
+    .nav-mobile{display:none}
+    .menu{
+      position:relative;
+    }
+    .menu summary{
+      list-style:none;
+      cursor:pointer;
+      min-height:var(--tap);
+      padding:0 14px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border:1px solid var(--border2);
+      border-radius:999px;
+      background:rgba(255,255,255,0.03);
+      color:rgba(255,255,255,0.86);
+      font-size:13px;
+      letter-spacing:0.10em;
+      text-transform:uppercase;
+    }
+    .menu summary::-webkit-details-marker{display:none}
+    .menu-panel{
+      position:absolute;
+      right:0;
+      top:calc(100% + 10px);
+      width:min(320px, 92vw);
+      background:rgba(18,18,22,0.98);
+      border:1px solid var(--border);
+      border-radius:16px;
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+    .menu-panel a{
+      display:flex;
+      align-items:center;
+      min-height:48px;
+      padding:0 16px;
+      border-top:1px solid rgba(255,255,255,0.06);
+      color:rgba(255,255,255,0.82);
+      font-size:13px;
+      letter-spacing:0.08em;
+      text-transform:uppercase;
+    }
+    .menu-panel a:first-child{border-top:none}
+    .menu-panel a:hover{background:rgba(255,255,255,0.04)}
+
+    @media (max-width: 860px){
+      .nav-desktop{display:none}
+      .nav-mobile{display:block}
+      .header-inner{min-height:68px}
+    }
+
+    /* System cues */
+    .section-head{
+      position:relative;
+      padding-left:18px;
+      max-width:860px;
+    }
+    .section-head::before{
+      content:"";
+      position:absolute;
+      left:0;
+      top:8px;
+      height:34px;
+      width:1px;
+      background:rgba(201,162,77,0.32);
+    }
+
+    /* Buttons */
+    .cta-row{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:22px;
+      align-items:center;
+    }
+    .btn{
+      min-height:var(--tap);
+      padding:0 18px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:999px;
+      border:1px solid var(--border);
+      font-weight:600;
+      letter-spacing:0.02em;
+      cursor:pointer;
+      user-select:none;
+      transition:transform 150ms ease, background 150ms ease, border-color 150ms ease;
+    }
+    .btn-primary{
+      background:rgba(201,162,77,0.95);
+      border-color:rgba(201,162,77,0.45);
+      color:#0F0F12;
+    }
+    .btn-primary:hover{background:rgba(201,162,77,1)}
+    .btn-secondary{
+      background:transparent;
+      color:rgba(255,255,255,0.88);
+      border-color:rgba(255,255,255,0.18);
+    }
+    .btn-secondary:hover{background:rgba(255,255,255,0.05)}
+    .btn:active{transform:translateY(1px)}
+    .btn[disabled]{
+      opacity:0.55;
+      cursor:not-allowed;
+      transform:none;
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      html{scroll-behavior:auto}
+      .btn{transition:none}
+      .btn:active{transform:none}
+    }
+
+    /* Hero boundary (B = subtle but visible) */
+    .hero-boundary{
+      position:relative;
+      border-radius:34px;
+      background:rgba(255,255,255,0.040);
+      border:1px solid rgba(255,255,255,0.10);
+      padding:46px 46px 44px 46px;
+      overflow:hidden;
+    }
+    .hero-axis{
+      position:absolute;
+      left:22px;
+      top:22px;
+      bottom:22px;
+      width:1px;
+      background:linear-gradient(
+        180deg,
+        rgba(201,162,77,0.08),
+        rgba(201,162,77,0.42),
+        rgba(201,162,77,0.08)
+      );
+    }
+
+    /* Hero topographic background (Option C) — decorative only */
+    .hero-topo{
+      position:absolute;
+      right:-140px;
+      top:50%;
+      transform:translateY(-50%);
+      width:min(760px, 62vw);
+      height:min(520px, 56vh);
+      background-image:url("data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20720%20520%22%3E%3Cdefs%3E%3ClinearGradient%20id=%22g%22%20x1=%220%22%20x2=%221%22%3E%3Cstop%20offset=%220%22%20stop-color=%22rgba(255,255,255,0.22)%22/%3E%3Cstop%20offset=%221%22%20stop-color=%22rgba(255,255,255,0.08)%22/%3E%3C/linearGradient%3E%3ClinearGradient%20id=%22g2%22%20x1=%220%22%20x2=%221%22%3E%3Cstop%20offset=%220%22%20stop-color=%22rgba(201,162,77,0.18)%22/%3E%3Cstop%20offset=%221%22%20stop-color=%22rgba(201,162,77,0.05)%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Cg%20fill=%22none%22%20stroke=%22url(#g)%22%20stroke-width=%221.2%22%20stroke-linecap=%22round%22%20stroke-linejoin=%22round%22%3E%3Cpath%20d=%22M40,120%20C140,60%20240,70%20320,120%20C410,176%20520,180%20640,120%20C680,100%20700,92%20720,96%22%20/%3E%3Cpath%20d=%22M10,170%20C120,120%20230,126%20320,178%20C410,232%20520,238%20650,176%20C688,156%20704,148%20720,150%22%20/%3E%3Cpath%20d=%22M0,225%20C110,190%20230,196%20320,238%20C410,280%20520,288%20660,236%20C694,224%20708,218%20720,220%22%20/%3E%3Cpath%20d=%22M0,278%20C120,246%20236,252%20330,292%20C420,330%20536,338%20670,290%20C700,280%20712,276%20720,278%22%20/%3E%3Cpath%20d=%22M0,330%20C132,302%20252,306%20350,342%20C440,374%20560,380%20690,346%20C708,340%20716,336%20720,336%22%20/%3E%3Cpath%20d=%22M0,386%20C150,366%20278,368%20380,396%20C468,420%20590,424%20712,402%22%20/%3E%3C/g%3E%3Cg%20fill=%22none%22%20stroke=%22url(#g2)%22%20stroke-width=%221%22%20stroke-linecap=%22round%22%20stroke-linejoin=%22round%22%20opacity=%220.8%22%3E%3Cpath%20d=%22M30,140%20C140,88%20240,96%20320,144%20C408,196%20520,202%20650,150%20C690,132%20706,126%20720,128%22%20/%3E%3Cpath%20d=%22M0,310%20C120,282%20240,286%20338,318%20C430,346%20548,354%20684,324%20C704,318%20714,314%20720,314%22%20/%3E%3C/g%3E%3C/svg%3E");
+      background-repeat:no-repeat;
+      background-size:contain;
+      background-position:center;
+      opacity:0.10;
+      pointer-events:none;
+      filter:blur(0.7px);
+      z-index:1;
+      mask-image:radial-gradient(circle at 58% 50%, rgba(0,0,0,1) 0%, rgba(0,0,0,0.90) 38%, rgba(0,0,0,0) 72%);
+      -webkit-mask-image:radial-gradient(circle at 58% 50%, rgba(0,0,0,1) 0%, rgba(0,0,0,0.90) 38%, rgba(0,0,0,0) 72%);
+    }
+
+
+
+    /* Half-globe wireframe emerging from hero card bottom */
+    .hero-halfglobe{
+      position:absolute;
+      left:55%;
+      bottom:-38px;
+      transform:translateX(-50%);
+      width:120%;
+      max-width:980px;
+      height:auto;
+      opacity:0.12;
+      pointer-events:none;
+      z-index:1;
+      filter:blur(0.6px);
+      mask-image:linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.92) 38%, rgba(0,0,0,0) 78%);
+      -webkit-mask-image:linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.92) 38%, rgba(0,0,0,0) 78%);
+    }
+    .halfglobe-svg{ width:100%; height:auto; display:block; }
+    @media (max-width: 900px){
+      .hero-halfglobe{ left:58%; bottom:-48px; opacity:0.10; width:130%; }
+    }
+    @media (max-width: 640px){
+      .hero-halfglobe{ left:56%; bottom:-64px; opacity:0.075; width:150%; filter:blur(0.8px); }
+    }
+    @supports not ((mask-image: linear-gradient(#000, transparent))){
+      .hero-halfglobe{ opacity:0.08; }
+    }
+    
+    /* Hero orb (subtle globe-like anchor) — decorative only */
+    .hero-orb{
+      position:absolute;
+      left:-160px;
+      bottom:-190px;
+      width:540px;
+      height:540px;
+      opacity:0.085;
+      pointer-events:none;
+      z-index:1;
+      filter:blur(0.35px);
+      mask-image:radial-gradient(circle at 62% 48%, rgba(0,0,0,1) 0%, rgba(0,0,0,0.90) 42%, rgba(0,0,0,0) 76%);
+      -webkit-mask-image:radial-gradient(circle at 62% 48%, rgba(0,0,0,1) 0%, rgba(0,0,0,0.90) 42%, rgba(0,0,0,0) 76%);
+    }
+    .hero-orb svg{ width:100%; height:100%; display:block; }
+    .hero-orb .orb-stroke{ stroke:rgba(255,255,255,0.18); }
+    .hero-orb .orb-gold{ stroke:rgba(201,162,77,0.16); }
+    @media (max-width: 900px){
+      .hero-orb{ left:-200px; bottom:-230px; opacity:0.075; }
+    }
+    @media (max-width: 640px){
+      .hero-orb{ width:420px; height:420px; left:-210px; bottom:-250px; opacity:0.055; filter:blur(0.6px); }
+    }
+/* Subtle hero glow to anchor content */
+    .hero-boundary::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background:radial-gradient(520px 260px at 26% 28%, rgba(201,162,77,0.10), transparent 60%);
+      opacity:0.55;
+      pointer-events:none;
+      z-index:0;
+    }
+    .hero-axis{ z-index:2; }
+    .hero-content{ position:relative; z-index:3; }
+
+    @media (max-width: 900px){
+      .hero-topo{ right:-200px; width:min(860px, 78vw); opacity:0.085; }
+    }
+    @media (max-width: 640px){
+      .hero-topo{
+        right:-260px;
+        top:62%;
+        width:760px;
+        height:420px;
+        opacity:0.055;
+        filter:blur(0.9px);
+      }
+    }
+
+    @supports not ((mask-image: radial-gradient(circle, #000, transparent))) {
+      .hero-topo{ opacity:0.07; }
+    }
+
+    /* Hero content */
+    .hero-content{
+      position:relative;
+      z-index:3;
+      padding-left:16px;
+    }
+    .hero-sub{
+      max-width:78ch;
+      margin-top:6px;
+      font-size:18px;
+      color:rgba(255,255,255,0.72);
+      line-height:1.65;
+    }
+    .hero-divider{
+      margin-top:30px;
+      height:1px;
+      background:linear-gradient(90deg, rgba(201,162,77,0.62), transparent 72%);
+      opacity:0.65;
+      max-width:460px;
+    }
+
+    @media (max-width: 640px){
+      .hero-boundary{
+        padding:34px 18px 34px 18px;
+        border-radius:28px;
+      }
+      .hero-axis{left:14px; top:18px; bottom:18px}
+      .hero-content{padding-left:12px}
+      .hero-sub{font-size:16px}
+    }
+
+    /* Mini trust bullets */
+
+    .mini-trust{
+      margin-top:18px;
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
+      padding-left:0;
+      list-style:none;
+    }
+    .mini-trust li{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-height:32px;
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.10);
+      background:rgba(255,255,255,0.03);
+      color:rgba(255,255,255,0.72);
+      font-size:14px;
+      line-height:1.3;
+    }
+    .mini-trust li::before{
+      content:"";
+      width:6px;
+      height:6px;
+      border-radius:99px;
+      background:rgba(201,162,77,0.85);
+      box-shadow:0 0 0 4px rgba(201,162,77,0.14);
+    }
+
+    /* Grids & cards */
+    .grid{
+      display:grid;
+      gap:18px;
+      margin-top:26px;
+    }
+    .grid-2{grid-template-columns:repeat(2, minmax(0,1fr))}
+    .grid-3{grid-template-columns:repeat(3, minmax(0,1fr))}
+    .grid-4{grid-template-columns:repeat(4, minmax(0,1fr))}
+    @media (max-width: 980px){
+      .grid-4{grid-template-columns:repeat(2, minmax(0,1fr))}
+    }
+    @media (max-width: 640px){
+      .grid-2,.grid-3,.grid-4{grid-template-columns:1fr}
+    }
+
+    .card{
+      background:rgba(255,255,255,0.045);
+      border:1px solid rgba(255,255,255,0.13);
+      border-radius:var(--radius);
+      padding:26px;
+    }
+    .card--primary{
+      background:linear-gradient(180deg, rgba(201,162,77,0.10), rgba(255,255,255,0.04));
+      border-color:rgba(201,162,77,0.38);
+    }
+    .card p{color:rgba(255,255,255,0.66)}
+    .bullets{
+      margin:14px 0 0 0;
+      padding:0;
+      list-style:none;
+      display:grid;
+      gap:8px;
+    }
+    .bullets li{
+      display:flex;
+      gap:10px;
+      color:rgba(255,255,255,0.70);
+      line-height:1.45;
+      font-size:14px;
+    }
+    .bullets li::before{
+      content:"";
+      width:6px;
+      height:6px;
+      border-radius:99px;
+      background:rgba(255,255,255,0.26);
+      margin-top:7px;
+      flex:0 0 6px;
+    }
+    .deliverables{
+      margin-top:14px;
+      padding-top:14px;
+      border-top:1px solid rgba(255,255,255,0.08);
+      color:rgba(255,255,255,0.58);
+      font-size:13px;
+      line-height:1.5;
+    }
+    .tagline{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin-top:10px;
+      color:rgba(255,255,255,0.62);
+      font-size:14px;
+    }
+    .pill-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:18px;
+    }
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      min-height:34px;
+      padding:0 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.10);
+      background:rgba(255,255,255,0.03);
+      color:rgba(255,255,255,0.72);
+      font-size:13px;
+      letter-spacing:0.02em;
+      white-space:nowrap;
+    }
+
+    /* Timeline */
+    .timeline{
+      display:grid;
+      gap:14px;
+      margin-top:26px;
+    }
+    .step{
+      display:grid;
+      grid-template-columns: 64px 1fr;
+      gap:16px;
+      padding:22px;
+      border-radius:var(--radius);
+      border:1px solid rgba(255,255,255,0.13);
+      background:rgba(255,255,255,0.040);
+    }
+    .step .num{
+      font-size:12px;
+      letter-spacing:0.16em;
+      text-transform:uppercase;
+      color:rgba(201,162,77,0.88);
+      margin-top:2px;
+    }
+    .step h3{margin-top:0}
+    .outputs{
+      margin-top:12px;
+      padding-left:0;
+      list-style:none;
+      display:grid;
+      gap:8px;
+      color:rgba(255,255,255,0.66);
+      font-size:14px;
+    }
+    .outputs li{
+      display:flex;
+      gap:10px;
+      line-height:1.45;
+    }
+    .outputs li::before{
+      content:"";
+      width:6px;
+      height:6px;
+      border-radius:99px;
+      background:rgba(201,162,77,0.65);
+      margin-top:7px;
+      flex:0 0 6px;
+      box-shadow:0 0 0 4px rgba(201,162,77,0.12);
+    }
+    @media (max-width:640px){
+      .step{grid-template-columns: 52px 1fr}
+    }
+
+    .what-you-get{
+      margin-top:18px;
+      padding:22px;
+      border-radius:var(--radius);
+      border:1px solid rgba(255,255,255,0.10);
+      background:rgba(255,255,255,0.03);
+    }
+
+    /* Proof cards */
+    .metric{
+      margin-top:6px;
+      color:rgba(255,255,255,0.78);
+      font-size:14px;
+      line-height:1.5;
+    }
+    .context{
+      margin-top:10px;
+      color:rgba(255,255,255,0.60);
+      font-size:13px;
+      letter-spacing:0.02em;
+    }
+    .stack{
+      margin-top:12px;
+      padding-top:12px;
+      border-top:1px solid rgba(255,255,255,0.08);
+      color:rgba(255,255,255,0.58);
+      font-size:13px;
+      line-height:1.45;
+    }
+
+    
+    /* Visual Proof panels (deliverable-style, no client logos) */
+    .visual-proof-grid{
+      margin-top:22px;
+      display:grid;
+      gap:16px;
+      grid-template-columns:repeat(3, minmax(0,1fr));
+    }
+    .vp-panel{
+      background:rgba(255,255,255,0.035);
+      border:1px solid rgba(255,255,255,0.12);
+      border-radius:var(--radius);
+      padding:18px;
+      overflow:hidden;
+    }
+    .vp-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:10px;
+    }
+    .vp-title{
+      font-size:12px;
+      letter-spacing:0.14em;
+      text-transform:uppercase;
+      color:rgba(255,255,255,0.82);
+    }
+    .vp-chip{
+      font-size:11px;
+      letter-spacing:0.12em;
+      text-transform:uppercase;
+      color:rgba(201,162,77,0.86);
+      border:1px solid rgba(201,162,77,0.26);
+      background:rgba(201,162,77,0.07);
+      padding:6px 10px;
+      border-radius:999px;
+      white-space:nowrap;
+    }
+    .vp-visual{
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,0.10);
+      background:
+        radial-gradient(420px 160px at 30% 30%, rgba(201,162,77,0.08), transparent 55%),
+        rgba(255,255,255,0.02);
+      padding:10px;
+    }
+    .vp-svg{ width:100%; height:auto; display:block; }
+    .vp-cap{
+      margin-top:10px;
+      color:rgba(255,255,255,0.62);
+      font-size:13px;
+      line-height:1.5;
+    }
+    @media (max-width: 980px){
+      .visual-proof-grid{ grid-template-columns:1fr; }
+    }
+
+
+    /* Packages */
+    .tier{
+      position:relative;
+      overflow:hidden;
+    }
+    .tier .tier-top{
+      display:flex;
+      align-items:baseline;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .tier .tier-name{
+      font-family:var(--serif);
+      font-size:20px;
+      color:rgba(255,255,255,0.92);
+    }
+    .tier .tier-tag{
+      font-size:12px;
+      letter-spacing:0.10em;
+      text-transform:uppercase;
+      color:rgba(255,255,255,0.62);
+      border:1px solid rgba(255,255,255,0.10);
+      background:rgba(255,255,255,0.03);
+      padding:6px 10px;
+      border-radius:999px;
+    }
+    .tier .timeline-note{
+      margin-top:12px;
+      color:rgba(255,255,255,0.66);
+      font-size:14px;
+    }
+
+    /* FAQ */
+    .faq{
+      display:grid;
+      gap:10px;
+      margin-top:22px;
+    }
+    details{
+      border:1px solid rgba(255,255,255,0.12);
+      background:rgba(255,255,255,0.03);
+      border-radius:14px;
+      overflow:hidden;
+    }
+    summary{
+      cursor:pointer;
+      list-style:none;
+      padding:18px 18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
+      min-height:var(--tap);
+      color:rgba(255,255,255,0.86);
+      font-weight:600;
+      line-height:1.3;
+    }
+    summary::-webkit-details-marker{display:none}
+    .faq-a{
+      padding:0 18px 18px 18px;
+      color:rgba(255,255,255,0.66);
+      line-height:1.65;
+    }
+    .pm{
+      width:18px;
+      height:18px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.16);
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      flex:0 0 18px;
+      color:rgba(255,255,255,0.72);
+      background:rgba(255,255,255,0.02);
+    }
+    details[open] .pm{color:rgba(201,162,77,0.95); border-color:rgba(201,162,77,0.35)}
+    .pm::before{content:"+"}
+    details[open] .pm::before{content:"–"}
+
+    /* Final CTA band */
+    .band{
+      border-radius:32px;
+      border:1px solid rgba(255,255,255,0.10);
+      background:
+        radial-gradient(700px 240px at 40% 10%, rgba(201,162,77,0.14), transparent 60%),
+        rgba(255,255,255,0.03);
+      padding:34px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
+      flex-wrap:wrap;
+      box-shadow:0 10px 30px rgba(0,0,0,0.18);
+    }
+    .band h2{margin:0}
+    .band p{max-width:72ch}
+
+    /* Contact */
+    .contact-wrap{
+      display:grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap:18px;
+      margin-top:22px;
+      align-items:start;
+    }
+    @media (max-width:900px){
+      .contact-wrap{grid-template-columns:1fr}
+    }
+
+    form{
+      display:grid;
+      gap:12px;
+      margin:0;
+      position:relative;
+      isolation:isolate;
+    }
+    label{
+      font-size:13px;
+      color:rgba(255,255,255,0.74);
+      letter-spacing:0.02em;
+    }
+    .field{
+      display:grid;
+      gap:8px;
+    }
+    input, textarea{
+      width:100%;
+      background:rgba(255,255,255,0.035);
+      border:1px solid rgba(255,255,255,0.13);
+      border-radius:12px;
+      padding:12px 14px;
+      color:rgba(255,255,255,0.90);
+      font-family:var(--sans);
+      font-size:15px;
+      line-height:1.4;
+    }
+    textarea{min-height:128px; resize:vertical}
+    .help{
+      font-size:13px;
+      color:rgba(255,255,255,0.52);
+      line-height:1.45;
+    }
+    .status{
+      margin-top:10px;
+      font-size:14px;
+      color:rgba(255,255,255,0.70);
+      min-height:1.3em;
+    }
+    .side{
+      border-radius:var(--radius);
+      border:1px solid rgba(255,255,255,0.10);
+      background:rgba(255,255,255,0.02);
+      padding:18px;
+    }
+    .side .direct{
+      margin-top:10px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .side .direct a{
+      color:rgba(201,162,77,0.95);
+      border-bottom:1px solid rgba(201,162,77,0.35);
+      padding-bottom:2px;
+    }
+
+    /* Footer */
+    footer{
+      border-top:1px solid var(--border2);
+      padding:26px 0;
+      color:rgba(255,255,255,0.56);
+      font-size:14px;
+    }
+
+    /* Honeypot hidden */
+    .hp{
+      position:absolute !important;
+      left:-9999px !important;
+      top:auto !important;
+      width:1px !important;
+      height:1px !important;
+      overflow:hidden !important;
+    }
+  </style>
+
+  <!-- Organization Schema (no fake claims, minimal fields) -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"Organization",
+    "name":"Meridian",
+    "url":"",
+    "logo":"assets/meridian-wordmark.png",
+    "sameAs":[]
+  }
+  </script>
+</head>
+
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header>
+    <div class="container">
+      <div class="header-inner">
+        <a class="brand" href="#hero" aria-label="Meridian home">
+          <img src="assets/meridian-wordmark.png" alt="Meridian" />
+        </a>
+
+        <nav class="nav-desktop" aria-label="Primary navigation">
+          <a href="#services">Services</a>
+          <a href="#process">Process</a>
+          <a href="#proof">Proof</a>
+          <a href="#faq">FAQ</a>
+          <a href="#contact">Contact</a>
+        </nav>
+
+        <div class="nav-mobile" aria-label="Mobile navigation">
+          <details class="menu">
+            <summary aria-label="Open menu">Menu</summary>
+            <div class="menu-panel" role="navigation" aria-label="Mobile menu links">
+              <a href="#services">Services</a>
+              <a href="#process">Process</a>
+              <a href="#proof">Proof</a>
+              <a href="#faq">FAQ</a>
+              <a href="#contact">Contact</a>
+            </div>
+          </details>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- HERO -->
+    <section id="hero" class="section section--first">
+      <div class="container">
+        <div class="hero-boundary">
+          <div class="hero-axis" aria-hidden="true"></div>
+          <div class="hero-orb" aria-hidden="true">
+            <svg viewBox="0 0 540 540" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+              <g fill="none" class="orb-stroke" stroke-width="1.2">
+                <circle cx="270" cy="270" r="215"/>
+                <ellipse cx="270" cy="270" rx="215" ry="160"/>
+                <ellipse cx="270" cy="270" rx="215" ry="115"/>
+                <ellipse cx="270" cy="270" rx="215" ry="70"/>
+                <path d="M270 55 C215 120 205 190 205 270 C205 350 215 420 270 485"/>
+                <path d="M270 55 C325 120 335 190 335 270 C335 350 325 420 270 485"/>
+                <path d="M270 55 C240 135 232 198 232 270 C232 342 240 405 270 485"/>
+                <path d="M270 55 C300 135 308 198 308 270 C308 342 300 405 270 485"/>
+              </g>
+              <path d="M110 365 C175 425 250 452 340 448 C392 446 432 434 470 410" fill="none" class="orb-gold" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="hero-topo" aria-hidden="true"></div>
+          <div class="hero-halfglobe" aria-hidden="true">
+            <svg class="halfglobe-svg" viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+              <defs>
+                <linearGradient id="hgStroke" x1="0" x2="1">
+                  <stop offset="0" stop-color="rgba(255,255,255,0.18)"/>
+                  <stop offset="1" stop-color="rgba(255,255,255,0.08)"/>
+                </linearGradient>
+                <linearGradient id="hgGold" x1="0" x2="1">
+                  <stop offset="0" stop-color="rgba(201,162,77,0.22)"/>
+                  <stop offset="1" stop-color="rgba(201,162,77,0.06)"/>
+                </linearGradient>
+              </defs>
+              <!-- Outer arc (only top half visible; bottom clipped by container) -->
+              <path d="M80 300 A240 240 0 0 1 560 300" fill="none" stroke="rgba(255,255,255,0.14)" stroke-width="1.2"/>
+              <!-- Latitudes -->
+              <path d="M120 300 A200 200 0 0 1 520 300" fill="none" stroke="url(#hgStroke)" stroke-width="1"/>
+              <path d="M160 300 A160 160 0 0 1 480 300" fill="none" stroke="url(#hgStroke)" stroke-width="1"/>
+              <path d="M200 300 A120 120 0 0 1 440 300" fill="none" stroke="url(#hgStroke)" stroke-width="1"/>
+              <path d="M240 300 A80 80 0 0 1 400 300" fill="none" stroke="rgba(255,255,255,0.10)" stroke-width="1"/>
+              <!-- Meridians -->
+              <path d="M320 60 C320 130 320 220 320 300" fill="none" stroke="url(#hgGold)" stroke-width="1.5"/>
+              <path d="M320 74 C262 118 234 198 240 300" fill="none" stroke="rgba(255,255,255,0.10)" stroke-width="1"/>
+              <path d="M320 74 C378 118 406 198 400 300" fill="none" stroke="rgba(255,255,255,0.10)" stroke-width="1"/>
+              <path d="M320 92 C222 150 182 228 200 300" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+              <path d="M320 92 C418 150 458 228 440 300" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+            </svg>
+          </div>
+          <div class="hero-content">
+            <div class="eyebrow">SERIOUS AI AGENCY</div>
+            <h1>Clarity is not a style. It’s a standard.</h1>
+            <p class="hero-sub">
+              Meridian builds premium websites and practical automations that remove friction—so your business runs cleaner, faster, and with fewer mistakes.
+            </p>
+
+            <div class="cta-row" role="group" aria-label="Primary actions">
+              <a class="btn btn-primary" href="#contact">Book a quick call</a>
+              <a class="btn btn-secondary" href="#proof">See what we build</a>
+            </div>
+
+            <ul class="mini-trust" aria-label="Trust highlights">
+              <li>Fast turnarounds with clean handoffs</li>
+              <li>Automation-first, human-centered</li>
+              <li>Built for maintainability (not demos)</li>
+            </ul>
+
+            <div class="hero-divider" aria-hidden="true"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="flow-band" aria-hidden="true"></div>
+
+    <!-- TRUST -->
+    <section id="trust" class="section section--tight section--surface">
+      <div class="container">
+        <div class="section-head">
+          <h2>Built for operators who want calm systems.</h2>
+          <p class="lead">We focus on reliability, clarity, and handoffs you can actually maintain.</p>
+        </div>
+
+        <div class="pill-row" aria-label="Capability highlights">
+          <span class="pill">Automation systems</span>
+          <span class="pill">Websites that convert</span>
+          <span class="pill">Lead routing + follow-ups</span>
+          <span class="pill">Internal tools + dashboards</span>
+          <span class="pill">AI-assisted workflows</span>
+        </div>
+
+        <div class="grid grid-3" style="margin-top:18px">
+          <div class="card">
+            <h3>Clarity</h3>
+            <p>Clear scope. Clear timeline. Clear ownership.</p>
+          </div>
+          <div class="card">
+            <h3>Handoff</h3>
+            <p>Documentation and handoff included by default.</p>
+          </div>
+          <div class="card">
+            <h3>Less noise</h3>
+            <p>We optimize for fewer steps, fewer errors, and less friction.</p>
+          </div>
+        </div>
+
+        <p class="tagline" style="margin-top:14px">
+          <span style="display:inline-block;width:6px;height:6px;border-radius:99px;background:rgba(255,255,255,0.22)"></span>
+          Selected engagements available on request.
+        </p>
+      </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section id="services" class="section">
+      <div class="container">
+        <div class="section-head">
+          <h2>What we do</h2>
+          <p class="lead">Websites and automation systems that save time, reduce mistakes, and keep teams aligned.</p>
+        </div>
+
+        <div class="grid grid-4" aria-label="Service cards">
+          <article class="card card--primary">
+            <h3>Websites that convert</h3>
+            <p>Premium, fast-loading sites with clean structure, strong messaging, and conversion paths that make sense.</p>
+            <ul class="bullets">
+              <li>Brand + layout polish</li>
+              <li>SEO-ready structure</li>
+              <li>Lead capture + routing</li>
+            </ul>
+            <div class="deliverables">
+              <strong style="color:rgba(255,255,255,0.78)">Deliverables:</strong>
+              Single-page site or multi-page • Copy refresh • Analytics-ready setup
+            </div>
+          </article>
+
+          <article class="card">
+            <h3>Business automations</h3>
+            <p>We remove manual work: lead intake, follow-ups, notifications, and data syncing—without fragile glue.</p>
+            <ul class="bullets">
+              <li>Form → sheet/CRM</li>
+              <li>SMS/email notifications</li>
+              <li>Auto follow-up flows</li>
+            </ul>
+            <div class="deliverables">
+              <strong style="color:rgba(255,255,255,0.78)">Deliverables:</strong>
+              Workflow map • Automations built • Failure-safe alerts
+            </div>
+          </article>
+
+          <article class="card">
+            <h3>AI workflows (practical)</h3>
+            <p>AI where it helps: summarizing, routing, drafting, and triaging—guided by guardrails and human approval.</p>
+            <ul class="bullets">
+              <li>Human-in-the-loop</li>
+              <li>Prompt + policy guardrails</li>
+              <li>Tool integrations</li>
+            </ul>
+            <div class="deliverables">
+              <strong style="color:rgba(255,255,255,0.78)">Deliverables:</strong>
+              Prompt system • Approval gates • Maintenance notes
+            </div>
+          </article>
+
+          <article class="card">
+            <h3>Support + iteration</h3>
+            <p>Launch is not the end. We keep systems clean as your needs change.</p>
+            <ul class="bullets">
+              <li>Bug fixes</li>
+              <li>Small improvements</li>
+              <li>Monitoring + alerts</li>
+            </ul>
+            <div class="deliverables">
+              <strong style="color:rgba(255,255,255,0.78)">Deliverables:</strong>
+              Weekly iteration option • Change log • Rollback plan
+            </div>
+          </article>
+        </div>
+
+        <div class="card" style="margin-top:18px; background:rgba(255,255,255,0.03); border-color:rgba(255,255,255,0.10)">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap">
+            <p style="color:rgba(255,255,255,0.74); font-size:16px; line-height:1.6">
+              <strong style="color:rgba(255,255,255,0.90)">Want a quick plan for your workflow?</strong>
+              We’ll outline the cleanest path and what to automate first.
+            </p>
+            <a class="btn btn-secondary" href="#contact">Request a build outline</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROCESS -->
+    <section id="process" class="section section--surface">
+      <div class="container">
+        <div class="section-head">
+          <h2>How we work</h2>
+          <p class="lead">A clear process that reduces risk and keeps projects moving.</p>
+        </div>
+
+        <div class="timeline" aria-label="Process timeline">
+          <div class="step">
+            <div class="num">01</div>
+            <div>
+              <h3>Discovery + scope</h3>
+              <p>We identify friction points, define outcomes, and map the system before we build.</p>
+              <ul class="outputs">
+                <li>Scope doc</li>
+                <li>System map</li>
+                <li>Timeline + milestones</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="num">02</div>
+            <div>
+              <h3>Build + iterate</h3>
+              <p>We implement in small, reviewable increments—so nothing drifts.</p>
+              <ul class="outputs">
+                <li>Working increments</li>
+                <li>Weekly checkpoints</li>
+                <li>Notes + decisions log</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="num">03</div>
+            <div>
+              <h3>Launch + harden</h3>
+              <p>We validate edge cases, add safeguards, and ensure reliability.</p>
+              <ul class="outputs">
+                <li>QA checklist</li>
+                <li>Fallback behavior</li>
+                <li>Performance pass</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="num">04</div>
+            <div>
+              <h3>Handoff + support</h3>
+              <p>Clean documentation, simple ownership, and optional ongoing iteration.</p>
+              <ul class="outputs">
+                <li>Handoff doc</li>
+                <li>Credential checklist</li>
+                <li>Support options</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <aside class="what-you-get" aria-label="What you get by default">
+          <h3>What you get</h3>
+          <ul class="bullets">
+            <li>A system you can maintain</li>
+            <li>Documentation by default</li>
+            <li>Clear “what changed” notes</li>
+            <li>No mystery dependencies</li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+
+    <!-- PROOF -->
+    <section id="proof" class="section">
+      <div class="container">
+        <div class="section-head">
+          <h2>Proof</h2>
+          <p class="lead">A few examples of what we build. (Specific client details available on request.)</p>
+        </div>
+
+
+        <div class="visual-proof-grid" aria-label="Visual proof deliverables">
+          <div class="vp-panel">
+            <div class="vp-top">
+              <div class="vp-title">Automation Map</div>
+              <div class="vp-chip">Deliverable</div>
+            </div>
+            <div class="vp-visual" aria-hidden="true">
+              <svg viewBox="0 0 520 190" xmlns="http://www.w3.org/2000/svg" class="vp-svg" aria-hidden="true" focusable="false">
+                <defs>
+                  <linearGradient id="vpLine" x1="0" x2="1">
+                    <stop offset="0" stop-color="rgba(255,255,255,0.14)"/>
+                    <stop offset="1" stop-color="rgba(201,162,77,0.28)"/>
+                  </linearGradient>
+                </defs>
+                <rect x="18" y="18" width="484" height="154" rx="16" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.10)"/>
+                <circle cx="96" cy="96" r="18" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.14)"/>
+                <circle cx="260" cy="56" r="16" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.14)"/>
+                <circle cx="260" cy="136" r="16" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.14)"/>
+                <circle cx="424" cy="96" r="18" fill="rgba(255,255,255,0.04)" stroke="rgba(201,162,77,0.22)"/>
+                <path d="M114 96 L240 58" stroke="url(#vpLine)" stroke-width="2" fill="none"/>
+                <path d="M114 96 L240 134" stroke="url(#vpLine)" stroke-width="2" fill="none"/>
+                <path d="M276 56 L406 96" stroke="url(#vpLine)" stroke-width="2" fill="none"/>
+                <path d="M276 136 L406 96" stroke="url(#vpLine)" stroke-width="2" fill="none"/>
+                <text x="72" y="146" font-size="12" fill="rgba(255,255,255,0.52)" font-family="system-ui">Inputs</text>
+                <text x="238" y="176" font-size="12" fill="rgba(255,255,255,0.52)" font-family="system-ui">Rules</text>
+                <text x="388" y="146" font-size="12" fill="rgba(255,255,255,0.52)" font-family="system-ui">Outputs</text>
+              </svg>
+            </div>
+            <div class="vp-cap">A clear workflow map before we build.</div>
+          </div>
+
+          <div class="vp-panel">
+            <div class="vp-top">
+              <div class="vp-title">Lead Intake Flow</div>
+              <div class="vp-chip">Deliverable</div>
+            </div>
+            <div class="vp-visual" aria-hidden="true">
+              <svg viewBox="0 0 520 190" xmlns="http://www.w3.org/2000/svg" class="vp-svg" aria-hidden="true" focusable="false">
+                <rect x="18" y="18" width="484" height="154" rx="16" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.10)"/>
+                <g fill="none" stroke="rgba(255,255,255,0.14)" stroke-width="1.6">
+                  <rect x="52" y="62" width="96" height="66" rx="14" fill="rgba(255,255,255,0.03)"/>
+                  <rect x="212" y="62" width="96" height="66" rx="14" fill="rgba(255,255,255,0.03)"/>
+                  <rect x="372" y="62" width="96" height="66" rx="14" fill="rgba(255,255,255,0.03)"/>
+                </g>
+                <path d="M148 95 H212" stroke="rgba(201,162,77,0.40)" stroke-width="2"/>
+                <path d="M308 95 H372" stroke="rgba(201,162,77,0.40)" stroke-width="2"/>
+                <text x="74" y="104" font-size="12" fill="rgba(255,255,255,0.62)" font-family="system-ui">Form</text>
+                <text x="234" y="104" font-size="12" fill="rgba(255,255,255,0.62)" font-family="system-ui">Routing</text>
+                <text x="392" y="104" font-size="12" fill="rgba(255,255,255,0.62)" font-family="system-ui">Notify</text>
+                <text x="60" y="160" font-size="12" fill="rgba(255,255,255,0.46)" font-family="system-ui">→ Sheet/CRM logging</text>
+              </svg>
+            </div>
+            <div class="vp-cap">Faster response times, fewer missed leads.</div>
+          </div>
+
+          <div class="vp-panel">
+            <div class="vp-top">
+              <div class="vp-title">Ops Dashboard Snapshot</div>
+              <div class="vp-chip">Deliverable</div>
+            </div>
+            <div class="vp-visual" aria-hidden="true">
+              <svg viewBox="0 0 520 190" xmlns="http://www.w3.org/2000/svg" class="vp-svg" aria-hidden="true" focusable="false">
+                <rect x="18" y="18" width="484" height="154" rx="16" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.10)"/>
+                <rect x="44" y="44" width="160" height="42" rx="12" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.10)"/>
+                <rect x="222" y="44" width="254" height="42" rx="12" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.10)"/>
+                <rect x="44" y="98" width="432" height="20" rx="10" fill="rgba(201,162,77,0.10)" stroke="rgba(201,162,77,0.20)"/>
+                <rect x="44" y="126" width="280" height="20" rx="10" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.10)"/>
+                <rect x="332" y="126" width="144" height="20" rx="10" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.10)"/>
+                <circle cx="466" cy="108" r="6" fill="rgba(201,162,77,0.70)"/>
+                <text x="54" y="74" font-size="12" fill="rgba(255,255,255,0.56)" font-family="system-ui">Overview</text>
+                <text x="232" y="74" font-size="12" fill="rgba(255,255,255,0.56)" font-family="system-ui">Active items</text>
+              </svg>
+            </div>
+            <div class="vp-cap">Simple visibility into what matters.</div>
+          </div>
+        </div>
+
+        <div class="grid grid-3" aria-label="Example engagements">
+          <article class="card card--primary">
+            <h3>Lead intake → instant routing</h3>
+            <div class="metric">Reduced lead response time from hours to minutes</div>
+            <div class="context">Service business lead capture</div>
+            <ul class="bullets" style="margin-top:14px">
+              <li>Form capture with validation</li>
+              <li>Automated SMS notifications</li>
+              <li>Logged submissions to a structured sheet</li>
+            </ul>
+            <div class="stack">
+              <strong style="color:rgba(255,255,255,0.78)">Stack:</strong>
+              Static site • Webhook endpoint • Google Sheets/CRM • SMS provider
+            </div>
+          </article>
+
+          <article class="card">
+            <h3>Premium landing page overhaul</h3>
+            <div class="metric">Improved clarity + reduced bounce-risk with stronger hierarchy</div>
+            <div class="context">Brand site refresh</div>
+            <ul class="bullets" style="margin-top:14px">
+              <li>Rebuilt sections for editorial rhythm</li>
+              <li>Added repeated CTAs and FAQ</li>
+              <li>Improved performance + accessibility</li>
+            </ul>
+            <div class="stack">
+              <strong style="color:rgba(255,255,255,0.78)">Stack:</strong>
+              HTML/CSS • Light JS • SEO metadata
+            </div>
+          </article>
+
+          <article class="card">
+            <h3>Workflow triage with AI guardrails</h3>
+            <div class="metric">Less manual sorting and fewer missed items</div>
+            <div class="context">Internal ops workflow</div>
+            <ul class="bullets" style="margin-top:14px">
+              <li>Categorization rules</li>
+              <li>Human approval gate</li>
+              <li>Alerting on exceptions</li>
+            </ul>
+            <div class="stack">
+              <strong style="color:rgba(255,255,255,0.78)">Stack:</strong>
+              Automation tool • AI model • Logging/alerts
+            </div>
+          </article>
+        </div>
+
+        <p class="help" style="margin-top:14px">
+          Integrity note: We don’t fabricate recognizable client names or logos. Metrics are phrased modestly unless verified.
+        </p>
+      </div>
+    </section>
+
+    <!-- PACKAGES -->
+    <section id="packages" class="section section--surface">
+      <div class="container">
+        <div class="section-head">
+          <h2>Engagements</h2>
+          <p class="lead">Simple starting points. Scope can flex based on your needs.</p>
+        </div>
+
+        <div class="grid grid-2" aria-label="Engagement tiers">
+          <article class="card tier">
+            <div class="tier-top">
+              <div class="tier-name">Starter</div>
+              <div class="tier-tag">Best for a clean launch</div>
+            </div>
+            <ul class="bullets" style="margin-top:14px">
+              <li>Premium one-page site or small site refresh</li>
+              <li>Clear messaging + section rebuild</li>
+              <li>Conversion path + CTA structure</li>
+              <li>Contact form wired + tested</li>
+              <li>SEO + performance basics</li>
+            </ul>
+            <div class="timeline-note"><strong style="color:rgba(255,255,255,0.80)">Timeline:</strong> 7–14 days typical</div>
+            <div class="cta-row">
+              <a class="btn btn-secondary" href="#contact">Ask about Starter</a>
+            </div>
+          </article>
+
+          <article class="card tier card--primary">
+            <div class="tier-top">
+              <div class="tier-name">Systems</div>
+              <div class="tier-tag">Best for automation + growth</div>
+            </div>
+            <ul class="bullets" style="margin-top:14px">
+              <li>Everything in Starter</li>
+              <li>Lead routing + notifications</li>
+              <li>Automated follow-ups (optional)</li>
+              <li>Workflow map + documentation</li>
+              <li>Monitoring + safeguards</li>
+            </ul>
+            <div class="timeline-note"><strong style="color:rgba(255,255,255,0.80)">Timeline:</strong> 2–4 weeks typical</div>
+            <div class="cta-row">
+              <a class="btn btn-primary" href="#contact">Ask about Systems</a>
+            </div>
+          </article>
+        </div>
+
+        <p class="help" style="margin-top:14px">
+          Pricing note: We don’t publish dollar amounts here. If you share your scope, we’ll reply with a quick estimate and a clean plan.
+        </p>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="section">
+      <div class="container">
+        <div class="section-head">
+          <h2>FAQ</h2>
+          <p class="lead">Straight answers to the questions that matter most.</p>
+        </div>
+
+        <div class="faq" aria-label="Frequently asked questions">
+          <details>
+            <summary>
+              <span>What kinds of businesses do you work with?</span>
+              <span class="pm" aria-hidden="true"></span>
+            </summary>
+            <div class="faq-a">
+              Service businesses and small teams that want clean websites and automations that reduce manual work—without introducing chaos.
+            </div>
+          </details>
+
+          <details>
+            <summary>
+              <span>Do you use AI everywhere?</span>
+              <span class="pm" aria-hidden="true"></span>
+            </summary>
+            <div class="faq-a">
+              Only where it helps. We prioritize reliability and guardrails. If AI adds risk, we use deterministic automation instead.
+            </div>
+          </details>
+
+          <details>
+            <summary>
+              <span>What tools do you integrate with?</span>
+              <span class="pm" aria-hidden="true"></span>
+            </summary>
+            <div class="faq-a">
+              Common stacks like forms, spreadsheets/CRMs, email/SMS providers, and lightweight automation platforms. We keep dependencies minimal.
+            </div>
+          </details>
+
+          <details>
+            <summary>
+              <span>How fast can we launch?</span>
+              <span class="pm" aria-hidden="true"></span>
+            </summary>
+            <div class="faq-a">
+              Most site builds or upgrades take 1–2 weeks. Automation systems vary, but we ship in small increments quickly.
+            </div>
+          </details>
+
+          <details>
+            <summary>
+              <span>Do you provide documentation and handoff?</span>
+              <span class="pm" aria-hidden="true"></span>
+            </summary>
+            <div class="faq-a">
+              Yes—by default. You’ll get a clear summary of what was built, how it works, and how to maintain it.
+            </div>
+          </details>
+
+          <details>
+            <summary>
+              <span>Can you maintain it for us?</span>
+              <span class="pm" aria-hidden="true"></span>
+            </summary>
+            <div class="faq-a">
+              Yes. We offer ongoing iteration and support so your system stays clean as needs change.
+            </div>
+          </details>
+
+          <details>
+            <summary>
+              <span>What do you need from us to start?</span>
+              <span class="pm" aria-hidden="true"></span>
+            </summary>
+            <div class="faq-a">
+              A short description of your current workflow, your goal, and any tools you already use. We’ll handle the rest.
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- FINAL CTA -->
+    <section id="final_cta" class="section section--tight section--surface">
+      <div class="container">
+        <div class="band" role="region" aria-label="Final call to action">
+          <div>
+            <h2>If your systems feel noisy, we can simplify them.</h2>
+            <p class="lead" style="margin-top:8px">
+              Tell us what you’re trying to automate or improve—we’ll reply with a clear next step.
+            </p>
+          </div>
+          <a class="btn btn-primary" href="#contact">Contact Meridian</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="section">
+      <div class="container">
+        <div class="section-head">
+          <h2>Contact</h2>
+          <p class="lead">
+            Meridian works best with teams who value clarity and thoughtful execution. If that sounds like you, tell us what you’re building.
+          </p>
+        </div>
+
+        <div class="contact-wrap">
+          <form id="contactForm" novalidate>
+            <!-- Honeypot -->
+            <div class="hp" aria-hidden="true">
+              <label for="company_website">Company website</label>
+              <input id="company_website" name="company_website" type="text" autocomplete="off" tabindex="-1" />
+            </div>
+
+            <div class="field">
+              <label for="name">Name</label>
+              <input id="name" name="name" type="text" autocomplete="name" required />
+              <div class="help">Who should we address in our reply?</div>
+            </div>
+
+            <div class="field">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" autocomplete="email" required />
+              <div class="help">We’ll respond with a clear next step (not spam).</div>
+            </div>
+
+            <div class="field">
+              <label for="message">What are you trying to automate or improve?</label>
+              <textarea id="message" name="message" required></textarea>
+              <div class="help">A few sentences is enough: goal, current workflow, and any tools you already use.</div>
+            </div>
+
+            <button class="btn btn-primary" id="submitBtn" type="submit">Send message</button>
+            <div class="status" id="formStatus" role="status" aria-live="polite"></div>
+          </form>
+
+          <aside class="side">
+            <h3>Direct contact</h3>
+            <p>If you prefer, email us directly. We’ll reply with a short plan and next step.</p>
+            <div class="direct">
+              <a href="mailto:hello@meridian.example" aria-label="Email Meridian">hello@meridian.example</a>
+              <span class="help">(Replace with your real email.)</span>
+            </div>
+
+            <div style="margin-top:14px; border-top:1px solid rgba(255,255,255,0.08); padding-top:14px">
+              <p class="help">
+                If you don’t have a form endpoint configured yet, the form will show a helpful message instead of failing silently.
+              </p>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container" style="display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap">
+      <div>© <span id="year"></span> Meridian</div>
+      <div style="color:rgba(255,255,255,0.46)">Websites & automation systems built with restraint.</div>
+    </div>
+  </footer>
+
+  <script>
+    // =========================
+    // Minimal JS: year + form submission (graceful fallback)
+    // =========================
+
+    // Set year
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // Configure your endpoint here:
+    // Example: const FORM_ENDPOINT = "https://your-endpoint.example/submit";
+    const FORM_ENDPOINT = "";
+
+    const form = document.getElementById("contactForm");
+    const statusEl = document.getElementById("formStatus");
+    const submitBtn = document.getElementById("submitBtn");
+
+    function setStatus(msg){
+      statusEl.textContent = msg || "";
+    }
+
+    function isValidEmail(email){
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      setStatus("");
+
+      // Honeypot: if filled, silently succeed (anti-bot)
+      const hp = form.querySelector('[name="company_website"]');
+      if (hp && hp.value.trim() !== "") {
+        setStatus("Thanks — your message was received.");
+        form.reset();
+        return;
+      }
+
+      const name = form.name.value.trim();
+      const email = form.email.value.trim();
+      const message = form.message.value.trim();
+
+      if (!name) { setStatus("Please add your name."); form.name.focus(); return; }
+      if (!email || !isValidEmail(email)) { setStatus("Please enter a valid email."); form.email.focus(); return; }
+      if (!message) { setStatus("Please describe what you want to automate or improve."); form.message.focus(); return; }
+
+      // If no endpoint, graceful fallback + direct email
+      if (!FORM_ENDPOINT) {
+        setStatus("Form endpoint isn’t configured yet. Please email hello@meridian.example and include your goal + current workflow.");
+        return;
+      }
+
+      // Submit
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Sending…";
+
+      try{
+        const payload = {
+          name,
+          email,
+          message,
+          source: window.location.href,
+          ts: new Date().toISOString()
+        };
+
+        const res = await fetch(FORM_ENDPOINT, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        if (!res.ok) throw new Error("Bad response");
+
+        setStatus("Sent. We’ll reply with a clear next step.");
+        form.reset();
+      }catch(err){
+        setStatus("Something went wrong sending your message. Please email hello@meridian.example instead.");
+      }finally{
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Send message";
+      }
+    });
+
+    // Close mobile menu after click (optional, tiny improvement; no dependency)
+    document.addEventListener("click", (e) => {
+      const link = e.target.closest(".menu-panel a");
+      if (!link) return;
+      const menu = document.querySelector(".menu");
+      if (menu && menu.open) menu.open = false;
+    });
+  </script>
+</body>
+</html>
