@@ -579,7 +579,7 @@ Added:
       line-height:1.4;
     }
     textarea{min-height:132px; resize:vertical}
-    input::placeholder { color: rgba(255,255,255,0.5); }
+    input::
 
 /* About identity mark (full logo) */
 .about-mark .about-logo img{display:block;max-width:520px;width:100%;height:auto;}
@@ -589,6 +589,11 @@ Added:
 @media (min-width: 980px)
 .about-grid{grid-template-columns:1fr 1fr;gap:4rem;align-items:start;}
 
+
+/* ABOUT GRID OVERRIDES */
+@media (min-width: 980px){
+  .about-grid{grid-template-columns: 1fr 1fr;}
+}
 
 /* About identity mark sizing */
 .about-mark .about-logo img{max-width:420px;width:100%;height:auto;}
@@ -710,6 +715,85 @@ Added:
 .about-mark .kicker{display:none;}
 
 .about-logo img{max-width:300px;opacity:0.85;}
+
+/* Mobile: ensure About logo is visible and not collapsed */
+.about-logo{display:block;}
+.about-logo img{display:block;}
+@media (max-width: 860px){
+  .about-grid{grid-template-columns: 1fr !important;}
+  .about-mark{order: 2; margin-top: 2rem; justify-content:flex-start;}
+  .about-logo img{max-width: 280px;}
+}
+
+/* Mobile menu button refinement */
+.nav-toggle{
+  display:none;
+  align-items:center;
+  gap:0.6rem;
+  padding:0.55rem 0.75rem;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,0.14);
+  background: rgba(0,0,0,0.30);
+  color: rgba(255,255,255,0.86);
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.04) inset, 0 18px 55px rgba(0,0,0,0.45);
+  backdrop-filter: blur(8px);
+  cursor:pointer;
+}
+.nav-toggle-inner{
+  width:18px;height:12px;display:inline-flex;flex-direction:column;justify-content:space-between;
+}
+.nav-toggle-inner span{
+  display:block;height:2px;border-radius:2px;background: rgba(212,175,55,0.85);
+  box-shadow: 0 10px 22px rgba(212,175,55,0.10);
+}
+.nav-toggle-text{
+  font-size:0.86rem;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+}
+.nav-toggle:hover{border-color: rgba(212,175,55,0.55);}
+.nav-toggle:active{transform: translateY(1px);}
+
+/* Floating contact button (mobile only) */
+.mobile-fab{
+  position:fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 50;
+  display:none;
+  padding: 0.9rem 1.05rem;
+  border-radius: 999px;
+  border: 1px solid rgba(212,175,55,0.75);
+  background: linear-gradient(180deg, rgba(212,175,55,0.22), rgba(212,175,55,0.10));
+  color: rgba(250,245,232,0.96);
+  text-decoration:none;
+  font-weight:650;
+  letter-spacing:0.02em;
+  box-shadow: 0 18px 60px rgba(0,0,0,0.60), 0 0 0 1px rgba(212,175,55,0.18) inset;
+}
+.mobile-fab:hover{border-color: rgba(212,175,55,0.95); transform: translateY(-1px);}
+.mobile-fab:active{transform: translateY(0);}
+@media (max-width: 860px){
+  .nav-toggle{display:inline-flex;}
+  .mobile-fab{display:inline-flex;}
+  body{padding-bottom: 84px;} /* keep FAB from covering content */
+}
+
+@media (max-width: 860px){
+  nav{display:none;}
+  body.nav-open nav{
+    display:block;
+    width:100%;
+    margin-top:0.75rem;
+    padding:0.85rem 0.95rem;
+    border-radius:18px;
+    border:1px solid rgba(255,255,255,0.10);
+    background: rgba(0,0,0,0.40);
+    box-shadow: 0 24px 80px rgba(0,0,0,0.65);
+    backdrop-filter: blur(10px);
+  }
+  body.nav-open .nav-links{justify-content:flex-start;}
+}
 </style>
 </head>
 
@@ -723,7 +807,7 @@ Added:
           <img src="assets/meridian-wordmark.png" alt="Meridian" />
         </a>
 
-        <button class="nav-toggle" type="button" aria-controls="site-nav" aria-expanded="false" id="navToggle">
+        <button class="nav-toggle" type="button" aria-controls="site-nav" aria-expanded="false" id="navToggle" aria-label="Open menu">
           Menu
         </button>
 
@@ -1142,8 +1226,7 @@ Added:
           </div>
 
           <div class="about-mark">
-            <div class="mono"></div>
-            <figure class="about-logo">
+<figure class="about-logo">
               <img src="assets/images/meridian-full-logo.png" alt="Meridian full identity mark" />
             </figure>
             
@@ -1459,5 +1542,24 @@ Added:
       }
     })();
   </script>
+
+  <a class="mobile-fab" href="#contact" aria-label="Contact Meridian">
+    Contact
+  </a>
+
+
+<script>
+  (function(){
+    var btn = document.querySelector('.nav-toggle');
+    var nav = document.querySelector('nav');
+    if(!btn || !nav) return;
+    btn.addEventListener('click', function(){
+      document.body.classList.toggle('nav-open');
+      var open = document.body.classList.contains('nav-open');
+      btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    });
+  })();
+</script>
+
 </body>
 </html>
