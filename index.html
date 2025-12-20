@@ -779,20 +779,42 @@ Added:
   body{padding-bottom: 84px;} /* keep FAB from covering content */
 }
 
+
+  body.nav-open .nav-links{justify-content:flex-start;}
+}
+
+/* Mobile nav dropdown (stable) */
 @media (max-width: 860px){
-  nav{display:none;}
-  body.nav-open nav{
+  #site-nav{display:none;}
+  body.nav-open #site-nav{
     display:block;
-    width:100%;
-    margin-top:0.75rem;
-    padding:0.85rem 0.95rem;
-    border-radius:18px;
-    border:1px solid rgba(255,255,255,0.10);
-    background: rgba(0,0,0,0.40);
-    box-shadow: 0 24px 80px rgba(0,0,0,0.65);
+    position:absolute;
+    right: 16px;
+    top: 68px;
+    width: min(240px, calc(100vw - 32px));
+    padding: 0.9rem 0.9rem;
+    border-radius: 18px;
+    border: 1px solid rgba(255,255,255,0.10);
+    background: rgba(0,0,0,0.55);
+    box-shadow: 0 24px 80px rgba(0,0,0,0.70);
     backdrop-filter: blur(10px);
   }
-  body.nav-open .nav-links{justify-content:flex-start;}
+  body.nav-open #site-nav .nav-links{
+    display:grid;
+    gap: 0.65rem;
+    justify-content:stretch;
+  }
+  body.nav-open #site-nav .nav-link{
+    padding: 0.35rem 0.2rem;
+  }
+  body.nav-open #site-nav .nav-cta{
+    margin-top: 0.35rem;
+    text-align:center;
+    justify-content:center;
+  }
+}
+@media (min-width: 861px){
+  #site-nav{display:block !important; position:static !important; width:auto !important; padding:0 !important; background:transparent !important; border:none !important; box-shadow:none !important;}
 }
 </style>
 </head>
@@ -807,11 +829,9 @@ Added:
           <img src="assets/meridian-wordmark.png" alt="Meridian" />
         </a>
 
-        <button class="nav-toggle" type="button" aria-controls="site-nav" aria-expanded="false" id="navToggle" aria-label="Open menu">
-          Menu
-        </button>
+        <button class="nav-toggle" type="button" aria-controls="site-nav" aria-expanded="false" aria-label="Open menu"><span class="nav-toggle-inner" aria-hidden="true"><span></span><span></span><span></span></span><span class="nav-toggle-text">Menu</span></button>
 
-        <nav id="site-nav" aria-label="Primary" data-open="false">
+        <nav id="site-nav" id="site-nav" aria-label="Primary" data-open="false">
           <a class="nav-link" href="#services">Services</a>
           <a class="nav-link" href="#process">Process</a>
                     <a class="nav-link" href="#about">About</a>
@@ -1227,7 +1247,7 @@ Added:
 
           <div class="about-mark">
 <figure class="about-logo">
-              <img src="assets/images/meridian-full-logo.png" alt="Meridian full identity mark" />
+              <img src="./assets/images/meridian-full-logo.png" alt="Meridian full identity mark" / onerror="this.onerror=null;this.src='./assets/meridian-full-logo.png';">
             </figure>
             
           </div>
@@ -1449,114 +1469,40 @@ Added:
     </div>
   </div>
 </footer>
-<script>
-  (function(){var y=document.getElementById('year'); if(y){y.textContent=new Date().getFullYear();}})();
-</script>
 
-  </main>
-
-  <script>
-    // Minimal JS: mobile nav toggle + contact form behavior
-    (function(){
-      const toggle = document.getElementById('navToggle');
-      const nav = document.getElementById('site-nav');
-      if (toggle && nav){
-        toggle.addEventListener('click', () => {
-          const open = nav.getAttribute('data-open') === 'true';
-          nav.setAttribute('data-open', String(!open));
-          toggle.setAttribute('aria-expanded', String(!open));
-        });
-      }
-      document.getElementById('year').textContent = new Date().getFullYear();
-
-      const FORM_ENDPOINT = ""; // set to your webhook URL to enable submissions
-
-      const form = document.getElementById('contactForm');
-      const status = document.getElementById('formStatus');
-      const btn = document.getElementById('submitBtn');
-
-      function setStatus(msg){
-        status.textContent = msg || "";
-      }
-
-      function validEmail(value){
-        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(value || "").trim());
-      }
-
-      if (form){
-        form.addEventListener('submit', async (e) => {
-          e.preventDefault();
-
-          const fd = new FormData(form);
-          const honeypot = (fd.get('company_website') || "").toString().trim();
-          if (honeypot){
-            // silently succeed
-            form.reset();
-            setStatus("Thanks — received.");
-            return;
-          }
-
-          const name = (fd.get('name') || "").toString().trim();
-          const email = (fd.get('email') || "").toString().trim();
-          const message = (fd.get('message') || "").toString().trim();
-
-          if (!name || !email || !message){
-            setStatus("Please complete all fields.");
-            return;
-          }
-          if (!validEmail(email)){
-            setStatus("Please enter a valid email address.");
-            return;
-          }
-
-          if (!FORM_ENDPOINT){
-            setStatus("Form endpoint not configured. Email us at meridianaiautomations@gmail.com.");
-            return;
-          }
-
-          btn.disabled = true;
-          btn.style.opacity = "0.75";
-          setStatus("Sending…");
-
-          try{
-            const payload = {
-              name, email, message,
-              source: window.location.href,
-              ts: new Date().toISOString()
-            };
-            const res = await fetch(FORM_ENDPOINT, {
-              method: "POST",
-              headers: {"Content-Type":"application/json"},
-              body: JSON.stringify(payload)
-            });
-            if (!res.ok) throw new Error("Bad response");
-            form.reset();
-            setStatus("Thanks — we’ll reply with next steps.");
-          }catch(err){
-            setStatus("Something went wrong. Email us at meridianaiautomations@gmail.com.");
-          }finally{
-            btn.disabled = false;
-            btn.style.opacity = "1";
-          }
-        });
-      }
-    })();
-  </script>
-
-  <a class="mobile-fab" href="#contact" aria-label="Contact Meridian">
-    Contact
-  </a>
 
 
 <script>
   (function(){
     var btn = document.querySelector('.nav-toggle');
-    var nav = document.querySelector('nav');
+    var nav = document.getElementById('site-nav');
     if(!btn || !nav) return;
-    btn.addEventListener('click', function(){
-      document.body.classList.toggle('nav-open');
-      var open = document.body.classList.contains('nav-open');
+
+    function setOpen(open){
+      document.body.classList.toggle('nav-open', open);
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
       btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    }
+
+    btn.addEventListener('click', function(){
+      setOpen(!document.body.classList.contains('nav-open'));
+    });
+
+    // Close on link click (mobile)
+    nav.addEventListener('click', function(e){
+      var a = e.target.closest('a');
+      if(!a) return;
+      setOpen(false);
+    });
+
+    // Close on escape
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Escape') setOpen(false);
+    });
+
+    // Close when resizing up to desktop
+    window.addEventListener('resize', function(){
+      if(window.innerWidth > 860) setOpen(false);
     });
   })();
 </script>
