@@ -1,3 +1,11 @@
+<!--
+Patch Notes (Architectural + About Split Grid)
+Added: About section (split grid) with full Meridian mark placed outside hero.
+Changed: Removed 'SERIOUS AI AGENCY' eyebrow to keep hero typographic and calm.
+Changed: Navigation updated to include About anchor.
+Fixed: Added responsive styling for About grid; maintains readability and premium spacing.
+-->
+
 <!doctype html>
 <!--
 Meridian — Patch Notes (Architectural Visual Reset)
@@ -571,46 +579,138 @@ Added:
       line-height:1.4;
     }
     textarea{min-height:132px; resize:vertical}
-    input::placeholder, textarea::placeholder{color:rgba(242,239,234,0.38)}
-    .form-row{display:grid; grid-template-columns:1fr 1fr; gap:12px}
-    @media (max-width: 760px){ .form-row{grid-template-columns:1fr} }
+    input::placeholder { color: rgba(255,255,255,0.5); }
 
-    .form-actions{
-      display:flex;
-      flex-wrap:wrap;
-      gap:12px;
-      align-items:center;
-    }
-    .status{
-      font-size:13px;
-      color:rgba(242,239,234,0.68);
-      line-height:1.6;
-      min-height:1.6em;
-    }
-    .note{
-      margin-top:14px;
-      color:rgba(242,239,234,0.62);
-      line-height:1.7;
-      max-width:72ch;
-    }
+/* About identity mark (full logo) */
+.about-mark .about-logo img{display:block;max-width:520px;width:100%;height:auto;}
 
-    footer{
-      padding:34px 0;
-      color:rgba(242,239,234,0.54);
-      font-size:13px;
-    }
-    .footer-row{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:18px;
-      border-top:1px solid var(--border2);
-      padding-top:18px;
-    }
-    @media (max-width: 760px){
-      .footer-row{flex-direction:column; align-items:flex-start}
-    }
-  </style>
+.about-grid{display:grid;grid-template-columns:1fr;gap:3rem;align-items:start;}
+
+@media (min-width: 980px)
+.about-grid{grid-template-columns:1fr 1fr;gap:4rem;align-items:start;}
+
+
+/* About identity mark sizing */
+.about-mark .about-logo img{max-width:420px;width:100%;height:auto;}
+.about-mark{display:flex;flex-direction:column;gap:1rem;align-items:flex-start;}
+
+/* About alignment + mark restraint */
+.about-grid{align-items:stretch;}
+.about-mark{display:flex;flex-direction:column;justify-content:center;gap:1rem;align-items:flex-start;}
+.about-logo{margin:0;}
+.about-logo img{max-width:340px;width:100%;height:auto;opacity:0.88;}
+
+/* Header CTA: higher contrast, still restrained */
+.nav-cta, .nav-cta:visited{
+  color: rgba(250,245,232,0.95);
+  border: 1px solid rgba(212,175,55,0.65);
+  background: linear-gradient(180deg, rgba(212,175,55,0.16), rgba(212,175,55,0.08));
+  box-shadow: 0 0 0 1px rgba(212,175,55,0.18) inset, 0 10px 30px rgba(0,0,0,0.35);
+}
+.nav-cta:hover{
+  border-color: rgba(212,175,55,0.9);
+  background: linear-gradient(180deg, rgba(212,175,55,0.22), rgba(212,175,55,0.11));
+  transform: translateY(-1px);
+}
+.nav-cta:active{transform: translateY(0);}
+
+/* Footer: real website structure */
+.site-footer{margin-top:6rem;padding:3.5rem 0 2.25rem;border-top:1px solid rgba(255,255,255,0.08);}
+.footer-grid{display:grid;gap:2.5rem;grid-template-columns:1fr;}
+@media (min-width: 980px){.footer-grid{grid-template-columns: 1.2fr 1fr 1fr;align-items:start;}}
+.footer-logo{height:22px;width:auto;opacity:0.92;display:block;margin:0 0 1rem 0;}
+.footer-tagline{max-width:34ch;color:rgba(255,255,255,0.66);line-height:1.6;margin:0;}
+.footer-nav{display:grid;gap:.65rem;}
+.footer-nav a{color:rgba(255,255,255,0.74);text-decoration:none;width:fit-content;}
+.footer-nav a:hover{color:rgba(255,255,255,0.92);}
+.footer-label{font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,0.55);margin-bottom:.75rem;}
+.footer-email{color:rgba(212,175,55,0.88);text-decoration:none;}
+.footer-email:hover{color:rgba(212,175,55,1);text-decoration:underline;}
+.footer-meta{margin-top:.75rem;color:rgba(255,255,255,0.58);}
+.footer-bottom{margin-top:2.75rem;}
+.footer-line{height:1px;background:rgba(255,255,255,0.08);margin-bottom:1.25rem;}
+.footer-legal{display:flex;flex-wrap:wrap;gap:.75rem;align-items:center;color:rgba(255,255,255,0.55);font-size:.9rem;}
+.footer-legal .dot{opacity:0.5;}
+
+
+
+/* Mobile optimization */
+@media (max-width: 860px){
+  .nav{padding: 0.85rem 0;}
+  .nav-inner{align-items:flex-start;gap:0.75rem;}
+  .nav-links{flex-wrap:wrap;row-gap:0.35rem;column-gap:0.9rem;justify-content:flex-end;}
+  .nav-cta{padding:0.6rem 0.85rem;}
+  .hero{padding-top:4.5rem;}
+  .hero h1{font-size: clamp(2.1rem, 7.5vw, 3.1rem); letter-spacing:-0.02em;}
+  .hero .hero-subtitle{font-size:1.05rem;max-width:52ch;}
+  .section{padding:3.75rem 0;}
+  .kicker{letter-spacing:0.14em;}
+  .cards, .services-grid, .proof-grid, .signals-grid{grid-template-columns:1fr !important;}
+  .about-logo img{max-width:320px;}
+  .site-footer{padding:3rem 0 2rem;}
+}
+
+@media (max-width: 520px){
+  .nav-links{justify-content:flex-start;}
+  .nav-brand{gap:0.65rem;}
+  .hero .hero-actions{flex-direction:column;align-items:flex-start;}
+  .hero .hero-actions a{width:100%;justify-content:center;}
+  input, textarea{font-size:16px;} /* prevent iOS zoom */
+}
+/* Signals block */
+.signals{margin-top:3.5rem;padding-top:2.5rem;border-top:1px solid rgba(255,255,255,0.08);}
+.signals-head{max-width:72ch;margin-bottom:1.75rem;}
+.signals-grid{display:grid;grid-template-columns:repeat(3, minmax(0, 1fr));gap:1.25rem;}
+.signal-card{border:1px solid rgba(255,255,255,0.08);border-radius:18px;background:rgba(0,0,0,0.25);padding:1.15rem 1.1rem;}
+.signal-top{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;margin-bottom:0.85rem;}
+.signal-title{font-weight:650;letter-spacing:0.01em;}
+.signal-note{font-size:0.9rem;color:rgba(255,255,255,0.55);}
+.spark{width:100%;height:auto;display:block;}
+
+
+/* Signals visual upgrade */
+.signals-grid{gap:1.35rem;}
+.signal-card{
+  background: radial-gradient(120% 120% at 0% 0%, rgba(255,255,255,0.06), rgba(0,0,0,0.20));
+  border: 1px solid rgba(255,255,255,0.10);
+  box-shadow: 0 20px 70px rgba(0,0,0,0.45);
+  overflow:hidden;
+}
+.signal-card:before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background: linear-gradient(180deg, rgba(212,175,55,0.06), rgba(0,0,0,0));
+  opacity:0.8;
+  pointer-events:none;
+}
+.signal-card{position:relative;}
+.signal-top{margin-bottom:0.95rem;}
+.signal-title{font-size:1.02rem;}
+.signal-chip{
+  margin-top:0.35rem;
+  font-size:0.78rem;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  color:rgba(255,255,255,0.58);
+}
+.spark.pro{border-radius:14px;background: rgba(0,0,0,0.18); border:1px solid rgba(255,255,255,0.07);}
+.spark.pro .grid path{stroke: rgba(255,255,255,0.06); stroke-width:1;}
+.spark.pro .line{stroke: rgba(212,175,55,0.92); stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round; filter: drop-shadow(0 8px 18px rgba(212,175,55,0.16));}
+.spark.pro .dot{fill: rgba(212,175,55,1); stroke: rgba(0,0,0,0.55); stroke-width:1.2;}
+/* Proof flow panel */
+.proof-flow{
+  background: radial-gradient(120% 120% at 15% 0%, rgba(212,175,55,0.06), rgba(0,0,0,0.18));
+  border:1px solid rgba(255,255,255,0.10);
+  box-shadow: 0 28px 90px rgba(0,0,0,0.55);
+}
+.proof-flow .muted{max-width:70ch;}
+
+/* About mark label removed */
+.about-mark .kicker{display:none;}
+
+.about-logo img{max-width:300px;opacity:0.85;}
+</style>
 </head>
 
 <body>
@@ -630,7 +730,8 @@ Added:
         <nav id="site-nav" aria-label="Primary" data-open="false">
           <a class="nav-link" href="#services">Services</a>
           <a class="nav-link" href="#process">Process</a>
-          <a class="nav-link" href="#proof">Proof</a>
+                    <a class="nav-link" href="#about">About</a>
+<a class="nav-link" href="#proof">Proof</a>
           <a class="nav-link" href="#faq">FAQ</a>
           <a class="nav-link nav-cta" href="#contact">Contact</a>
         </nav>
@@ -644,8 +745,8 @@ Added:
       <div class="container motif">
         <div class="motif-inner hero-grid">
           <div>
-            <div class="eyebrow">SERIOUS AI AGENCY</div>
-            <h1>Clarity is not a style. It’s a standard.</h1>
+<h1>Websites and automations built to reduce manual work.</h1>
+<p class="hero-sub">Clear systems. Fewer tools. Less friction.</p>
             <p class="lead">
               Meridian builds premium websites and practical automations that remove friction—so your business runs cleaner, faster, and with fewer mistakes.
             </p>
@@ -707,7 +808,7 @@ Added:
           <div class="grid cols-2">
             <article class="card">
               <h3>Websites that convert</h3>
-              <p>Premium, fast-loading sites with clean structure, strong messaging, and conversion paths that make sense.</p>
+              <p>Fast-loading, well-structured sites with clear messaging and straightforward conversion paths. Built to be readable, maintainable, and easy to update.</p>
               <ul>
                 <li>Brand + layout polish</li>
                 <li>SEO‑ready structure</li>
@@ -729,7 +830,7 @@ Added:
 
             <article class="card">
               <h3>AI workflows (practical)</h3>
-              <p>AI where it helps: summarizing, routing, drafting, and triaging—guided by guardrails and human approval.</p>
+              <p>Used only where it reduces effort without introducing risk. AI handles summarizing, routing, and drafting — with clear rules and human approval where it matters.</p>
               <ul>
                 <li>Human‑in‑the‑loop</li>
                 <li>Prompt + policy guardrails</li>
@@ -827,47 +928,143 @@ Added:
           <h2>Proof</h2>
           <p class="section-lead">A few examples of what we build. Specific client details available on request.</p>
 
+      <div class="signals">
+        <div class="signals-head">
+          <div class="kicker">OPERATIONAL SIGNALS</div>
+          <h3>We make work measurable.</h3>
+          <p class="muted">When automation is installed, we track a small set of signals that tell the truth: time returned, cycle time, and avoidable errors. Below are example visualizations of the style of reporting we provide.</p>
+        </div>
+
+        <div class="signals-grid" aria-label="Operational signals">
+          <article class="signal-card">
+            <div class="signal-top">
+              <div class="signal-title">Time returned</div>
+              <div class="signal-chip">Signal • weekly</div>
+              <div class="signal-note">trend over weeks</div>
+            </div>
+            
+            <svg class="spark pro" viewBox="0 0 240 84" role="img" aria-label="Mini chart">
+              <defs>
+                <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="rgba(212,175,55,0.28)"/>
+                  <stop offset="1" stop-color="rgba(212,175,55,0.03)"/>
+                </linearGradient>
+              </defs>
+              <g class="grid">
+                <path d="M10 12 H230 M10 30 H230 M10 48 H230 M10 66 H230" />
+                <path d="M10 12 V72 M58 12 V72 M106 12 V72 M154 12 V72 M202 12 V72 M230 12 V72" />
+              </g>
+              <path class="area" d="M10 64 L46 62 L82 56 L118 50 L154 54 L190 40 L230 34 L230 72 L10 72 Z" fill="url(#g)"/>
+              <path class="line" d="M10 64 L46 62 L82 56 L118 50 L154 54 L190 40 L230 34" fill="none"/>
+              <circle class="dot" cx="230" cy="34" r="3.6"/>
+            </svg>
+
+          </article>
+
+          <article class="signal-card">
+            <div class="signal-top">
+              <div class="signal-title">Cycle time</div>
+              <div class="signal-chip">Signal • rolling</div>
+              <div class="signal-note">from request → done</div>
+            </div>
+            
+            <svg class="spark pro" viewBox="0 0 240 84" role="img" aria-label="Mini chart">
+              <defs>
+                <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="rgba(212,175,55,0.28)"/>
+                  <stop offset="1" stop-color="rgba(212,175,55,0.03)"/>
+                </linearGradient>
+              </defs>
+              <g class="grid">
+                <path d="M10 12 H230 M10 30 H230 M10 48 H230 M10 66 H230" />
+                <path d="M10 12 V72 M58 12 V72 M106 12 V72 M154 12 V72 M202 12 V72 M230 12 V72" />
+              </g>
+              <path class="area" d="M10 28 L46 30 L82 34 L118 38 L154 46 L190 52 L230 56 L230 72 L10 72 Z" fill="url(#g)"/>
+              <path class="line" d="M10 28 L46 30 L82 34 L118 38 L154 46 L190 52 L230 56" fill="none"/>
+              <circle class="dot" cx="230" cy="56" r="3.6"/>
+            </svg>
+
+          </article>
+
+          <article class="signal-card">
+            <div class="signal-top">
+              <div class="signal-title">Avoidable errors</div>
+              <div class="signal-chip">Signal • rolling</div>
+              <div class="signal-note">handoff + data issues</div>
+            </div>
+            
+            <svg class="spark pro" viewBox="0 0 240 84" role="img" aria-label="Mini chart">
+              <defs>
+                <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="rgba(212,175,55,0.28)"/>
+                  <stop offset="1" stop-color="rgba(212,175,55,0.03)"/>
+                </linearGradient>
+              </defs>
+              <g class="grid">
+                <path d="M10 12 H230 M10 30 H230 M10 48 H230 M10 66 H230" />
+                <path d="M10 12 V72 M58 12 V72 M106 12 V72 M154 12 V72 M202 12 V72 M230 12 V72" />
+              </g>
+              <path class="area" d="M10 44 L46 46 L82 40 L118 50 L154 38 L190 44 L230 40 L230 72 L10 72 Z" fill="url(#g)"/>
+              <path class="line" d="M10 44 L46 46 L82 40 L118 50 L154 38 L190 44 L230 40" fill="none"/>
+              <circle class="dot" cx="230" cy="40" r="3.6"/>
+            </svg>
+
+          </article>
+        </div>
+      </div>
+
+
           <div class="diagram" aria-label="Example system diagram">
-            <svg viewBox="0 0 980 180" width="100%" height="auto" role="img" aria-label="Website to intake to routing to follow-ups to dashboard flow">
+            <svg viewBox="0 0 1100 180" width="100%" height="auto" role="img" aria-label="Example workflow diagram: website to intake to routing to follow-ups to dashboard">
               <defs>
                 <linearGradient id="goldStroke" x1="0" y1="0" x2="1" y2="0">
                   <stop offset="0" stop-color="rgba(201,162,77,0.25)"/>
-                  <stop offset="1" stop-color="rgba(201,162,77,0.85)"/>
+                  <stop offset="0.5" stop-color="rgba(201,162,77,0.85)"/>
+                  <stop offset="1" stop-color="rgba(201,162,77,0.25)"/>
                 </linearGradient>
+                <filter id="softGlow" x="-40%" y="-80%" width="180%" height="260%">
+                  <feGaussianBlur stdDeviation="10" result="blur"/>
+                  <feColorMatrix in="blur" type="matrix"
+                    values="1 0 0 0 0.78  0 1 0 0 0.60  0 0 1 0 0.18  0 0 0 0.22 0" result="goldTint"/>
+                  <feMerge>
+                    <feMergeNode in="goldTint"/>
+                    <feMergeNode in="SourceGraphic"/>
+                  </feMerge>
+                </filter>
               </defs>
 
               <!-- connectors -->
-              <path d="M170 90 C 250 90, 250 90, 330 90" fill="none" stroke="rgba(242,239,234,0.18)" stroke-width="2"/>
-              <path d="M410 90 C 490 90, 490 90, 570 90" fill="none" stroke="url(#goldStroke)" stroke-width="2"/>
-              <path d="M650 90 C 730 90, 730 90, 810 90" fill="none" stroke="rgba(242,239,234,0.18)" stroke-width="2"/>
+              <path d="M170 90 C220 90 230 90 250 90" fill="none" stroke="rgba(242,239,234,0.18)" stroke-width="2"/>
+              <path d="M370 90 C420 90 430 90 450 90" fill="none" stroke="url(#goldStroke)" stroke-width="2"/>
+              <path d="M570 90 C620 90 630 90 650 90" fill="none" stroke="rgba(201,162,77,0.55)" stroke-width="2"/>
+              <path d="M770 90 C820 90 830 90 850 90" fill="none" stroke="rgba(242,239,234,0.18)" stroke-width="2"/>
 
               <!-- nodes -->
-              <g fill="rgba(15,15,18,0.0)">
-                <rect x="40" y="52" width="130" height="76" rx="10" ry="10" stroke="rgba(242,239,234,0.16)" stroke-width="2"/>
-                <rect x="300" y="52" width="130" height="76" rx="10" ry="10" stroke="rgba(242,239,234,0.16)" stroke-width="2"/>
-                <rect x="560" y="52" width="130" height="76" rx="10" ry="10" stroke="rgba(201,162,77,0.22)" stroke-width="2"/>
-                <rect x="820" y="52" width="130" height="76" rx="10" ry="10" stroke="rgba(242,239,234,0.16)" stroke-width="2"/>
+              <rect x="50"  y="52" width="120" height="76" rx="12" fill="rgba(255,255,255,0.03)" stroke="rgba(242,239,234,0.18)"/>
+              <text x="110" y="84" text-anchor="middle" font-size="12" fill="rgba(242,239,234,0.85)" font-family="ui-sans-serif, system-ui">Website</text>
+              <text x="110" y="104" text-anchor="middle" font-size="12" fill="rgba(242,239,234,0.55)" font-family="ui-sans-serif, system-ui">Landing</text>
+
+              <rect x="250" y="52" width="120" height="76" rx="12" fill="rgba(255,255,255,0.03)" stroke="rgba(242,239,234,0.18)"/>
+              <text x="310" y="84" text-anchor="middle" font-size="12" fill="rgba(242,239,234,0.85)" font-family="ui-sans-serif, system-ui">Intake</text>
+              <text x="310" y="104" text-anchor="middle" font-size="12" fill="rgba(242,239,234,0.55)" font-family="ui-sans-serif, system-ui">Form</text>
+
+              <!-- routing (highlight) -->
+              <g filter="url(#softGlow)">
+                <rect x="450" y="52" width="120" height="76" rx="12" fill="rgba(201,162,77,0.06)" stroke="rgba(201,162,77,0.75)"/>
               </g>
+              <text x="510" y="84" text-anchor="middle" font-size="12" fill="rgba(242,239,234,0.92)" font-family="ui-sans-serif, system-ui">Routing</text>
+              <text x="510" y="104" text-anchor="middle" font-size="12" fill="rgba(242,239,234,0.60)" font-family="ui-sans-serif, system-ui">Rules</text>
 
-              <!-- labels -->
-              <g font-family="ui-sans-serif, system-ui" font-size="14" fill="rgba(242,239,234,0.86)">
-                <text x="105" y="86" text-anchor="middle">Website</text>
-                <text x="105" y="108" text-anchor="middle" fill="rgba(242,239,234,0.62)" font-size="12">Clear path</text>
+              <rect x="650" y="52" width="120" height="76" rx="12" fill="rgba(255,255,255,0.03)" stroke="rgba(242,239,234,0.18)"/>
+              <text x="710" y="84" text-anchor="middle" font-size="12" fill="rgba(242,239,234,0.85)" font-family="ui-sans-serif, system-ui">Follow‑ups</text>
+              <text x="710" y="104" text-anchor="middle" font-size="12" fill="rgba(242,239,234,0.55)" font-family="ui-sans-serif, system-ui">SMS / Email</text>
 
-                <text x="365" y="86" text-anchor="middle">Intake</text>
-                <text x="365" y="108" text-anchor="middle" fill="rgba(242,239,234,0.62)" font-size="12">Validation</text>
+              <rect x="850" y="52" width="120" height="76" rx="12" fill="rgba(255,255,255,0.03)" stroke="rgba(242,239,234,0.18)"/>
+              <text x="910" y="84" text-anchor="middle" font-size="12" fill="rgba(242,239,234,0.85)" font-family="ui-sans-serif, system-ui">Dashboard</text>
+              <text x="910" y="104" text-anchor="middle" font-size="12" fill="rgba(242,239,234,0.55)" font-family="ui-sans-serif, system-ui">Sheet / CRM</text>
 
-                <text x="625" y="86" text-anchor="middle">Routing</text>
-                <text x="625" y="108" text-anchor="middle" fill="rgba(242,239,234,0.62)" font-size="12">Fast handoff</text>
-
-                <text x="885" y="86" text-anchor="middle">Dashboard</text>
-                <text x="885" y="108" text-anchor="middle" fill="rgba(242,239,234,0.62)" font-size="12">Visibility</text>
-              </g>
-
-              <!-- follow-ups as branch -->
-              <path d="M625 52 C 625 18, 760 18, 760 52" fill="none" stroke="rgba(242,239,234,0.14)" stroke-width="2"/>
-              <rect x="712" y="8" width="96" height="34" rx="10" ry="10" fill="rgba(255,255,255,0.02)" stroke="rgba(242,239,234,0.14)" stroke-width="2"/>
-              <text x="760" y="30" text-anchor="middle" font-family="ui-sans-serif, system-ui" font-size="12" fill="rgba(242,239,234,0.70)">Follow‑ups</text>
+              <!-- subtle guide labels -->
+              <text x="50" y="30" text-anchor="start" font-size="12" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace" fill="rgba(201,162,77,0.70)">Website → Intake → Routing → Follow‑ups → Dashboard</text>
             </svg>
 
             <div class="diagram-caption">
@@ -918,7 +1115,43 @@ Added:
 
     <!-- PACKAGES -->
     <section id="packages" class="section">
-      <div class="container motif">
+ 
+    <section id="about" class="section section-alt">
+      <div class="container">
+        <div class="section-head">
+          <h2>About Meridian</h2>
+          <p class="lead">
+            Meridian helps teams remove friction from day‑to‑day operations—so time goes back to the work that actually moves revenue.
+            We design automations that feel natural for humans to run, own, and improve.
+          </p>
+        </div>
+
+        <div class="about-grid">
+          <div class="about-copy">
+            <div class="about-rule"></div>
+            <h3 class="about-subhead">Human-first systems. Operator-grade execution.</h3>
+            <p>
+              Our work is less about “AI everywhere” and more about reducing manual steps and building reliable workflows: intake, routing, follow‑ups, and visibility.out building reliable workflows: intake, routing, follow‑ups, and visibility.
+              When AI helps, it sits behind guardrails and approval gates. When it doesn’t, we keep it deterministic.
+            </p>
+            <ul class="about-list">
+              <li><span class="k">Focus:</span> fewer manual steps, fewer mistakes, faster response loops.</li>
+              <li><span class="k">Handoffs:</span> documented, maintainable, and designed to last.</li>
+              <li><span class="k">Restraint:</span> minimal dependencies, no fragile demos.</li>
+            </ul>
+          </div>
+
+          <div class="about-mark">
+            <div class="mono"></div>
+            <figure class="about-logo">
+              <img src="assets/images/meridian-full-logo.png" alt="Meridian full identity mark" />
+            </figure>
+            
+          </div>
+        </div>
+      </div>
+    </section>
+     <div class="container motif">
         <div class="motif-inner">
           <h2>Engagements</h2>
           <p class="section-lead">Simple starting points. Scope can flex based on your needs.</p>
@@ -928,7 +1161,7 @@ Added:
               <h3>Starter</h3>
               <p><span style="color:rgba(242,239,234,0.72)">Best for a clean launch.</span></p>
               <ul>
-                <li>Premium one-page site or small site refresh</li>
+                <li>One-page site or small site refresh, built for speed and clarity</li>
                 <li>Clear messaging + section rebuild</li>
                 <li>Conversion path + CTA structure</li>
                 <li>Contact form wired + tested</li>
@@ -1063,18 +1296,18 @@ Added:
         <div class="motif-inner">
           <h2>Contact</h2>
           <p class="section-lead">If you’re serious about reducing friction, send a note. We’ll respond with a clear next step.</p>
-          <p class="note">Prefer email? <a href="mailto:hello@meridian.studio" style="color:rgba(201,162,77,0.92);">hello@meridian.studio</a></p>
+          <p class="note">Prefer email? <a href="mailto:meridianaiautomations@gmail.com" style="color:rgba(201,162,77,0.92);">meridianaiautomations@gmail.com</a></p>
 
           <form id="contactForm" novalidate>
             <div class="form-row">
               <div>
                 <label for="name">Name</label>
-                <input id="name" name="name" autocomplete="name" required placeholder="Your name" />
-              </div>
+                <input id="name" name="name" autocomplete="name" required />
+                </div>
               <div>
                 <label for="email">Email</label>
-                <input id="email" name="email" type="email" autocomplete="email" required placeholder="you@company.com" />
-              </div>
+                <input id="email" name="email" type="email" autocomplete="email" required />
+                </div>
             </div>
 
             <!-- Honeypot (hidden) -->
@@ -1085,7 +1318,8 @@ Added:
 
             <div>
               <label for="message">Message</label>
-              <textarea id="message" name="message" required placeholder="What are you trying to improve or automate?"></textarea>
+              <textarea id="message" name="message" required>
+              </textarea>
             </div>
 
             <div class="form-actions">
@@ -1099,18 +1333,43 @@ Added:
       </div>
     </section>
 
-    <footer>
-      <div class="container">
-        <div class="footer-row">
-          <div>© <span id="year"></span> Meridian</div>
-          <div style="display:flex; gap:14px; color:rgba(242,239,234,0.54);">
-            <a href="#services" class="nav-link" style="padding:6px 0;">Services</a>
-            <a href="#process" class="nav-link" style="padding:6px 0;">Process</a>
-            <a href="#contact" class="nav-link" style="padding:6px 0;">Contact</a>
-          </div>
-        </div>
-      </div>
-    </footer>
+    
+<footer class="site-footer" aria-label="Footer">
+  <div class="container footer-grid">
+    <div class="footer-brand">
+      <img class="footer-logo" src="assets/meridian-wordmark.png" alt="Meridian" />
+      <p class="footer-tagline">Workflow automation built for clarity, reliability, and time returned.</p>
+    </div>
+
+    <nav class="footer-nav" aria-label="Footer navigation">
+      <a href="#services">Services</a>
+      <a href="#process">Process</a>
+      <a href="#about">About</a>
+      <a href="#proof">Proof</a>
+      <a href="#faq">FAQ</a>
+      <a href="#contact">Contact</a>
+    </nav>
+
+    <div class="footer-contact">
+      <div class="footer-label">Contact</div>
+      <a class="footer-email" href="mailto:meridianaiautomations@gmail.com">meridianaiautomations@gmail.com</a>
+      <div class="footer-meta">Response within 1–2 business days.</div>
+    </div>
+  </div>
+
+  <div class="container footer-bottom">
+    <div class="footer-line"></div>
+    <div class="footer-legal">
+      <span>© <span id="year"></span> Meridian</span>
+      <span class="dot">•</span>
+      <span>Operator-grade systems</span>
+    </div>
+  </div>
+</footer>
+<script>
+  (function(){var y=document.getElementById('year'); if(y){y.textContent=new Date().getFullYear();}})();
+</script>
+
   </main>
 
   <script>
@@ -1168,7 +1427,7 @@ Added:
           }
 
           if (!FORM_ENDPOINT){
-            setStatus("Form endpoint not configured. Email us at hello@meridian.studio.");
+            setStatus("Form endpoint not configured. Email us at meridianaiautomations@gmail.com.");
             return;
           }
 
@@ -1191,7 +1450,7 @@ Added:
             form.reset();
             setStatus("Thanks — we’ll reply with next steps.");
           }catch(err){
-            setStatus("Something went wrong. Email us at hello@meridian.studio.");
+            setStatus("Something went wrong. Email us at meridianaiautomations@gmail.com.");
           }finally{
             btn.disabled = false;
             btn.style.opacity = "1";
