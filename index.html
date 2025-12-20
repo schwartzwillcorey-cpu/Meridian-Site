@@ -816,6 +816,43 @@ Added:
 @media (min-width: 861px){
   #site-nav{display:block !important; position:static !important; width:auto !important; padding:0 !important; background:transparent !important; border:none !important; box-shadow:none !important;}
 }
+
+/* Mobile nav + FAB (ITER10) */
+@media (max-width: 860px){
+  #site-nav{display:none;}
+  body.nav-open #site-nav{
+    display:block;
+    position:absolute;
+    right: 16px;
+    top: 68px;
+    width: min(260px, calc(100vw - 32px));
+    padding: 0.95rem 0.95rem;
+    border-radius: 18px;
+    border: 1px solid rgba(255,255,255,0.10);
+    background: rgba(0,0,0,0.60);
+    box-shadow: 0 24px 80px rgba(0,0,0,0.72);
+    backdrop-filter: blur(10px);
+    z-index: 60;
+  }
+  body.nav-open #site-nav .nav-links{
+    display:grid;
+    gap: 0.65rem;
+    justify-content:stretch;
+  }
+  body.nav-open #site-nav .nav-cta{margin-top:0.35rem;}
+  .mobile-fab{
+    display:inline-flex !important;
+    position:fixed;
+    right:16px;
+    bottom:16px;
+    z-index: 55;
+  }
+  body{padding-bottom:84px;}
+}
+@media (min-width: 861px){
+  #site-nav{display:block !important; position:static !important; width:auto !important; padding:0 !important; background:transparent !important; border:none !important; box-shadow:none !important;}
+  .mobile-fab{display:none !important;}
+}
 </style>
 </head>
 
@@ -1472,37 +1509,56 @@ Added:
 
 
 
+
+
+
 <script>
   (function(){
-    var btn = document.querySelector('.nav-toggle');
-    var nav = document.getElementById('site-nav');
-    if(!btn || !nav) return;
-
-    function setOpen(open){
-      document.body.classList.toggle('nav-open', open);
-      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-      btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    function ready(fn){
+      if(document.readyState === 'loading'){ document.addEventListener('DOMContentLoaded', fn); }
+      else { fn(); }
     }
 
-    btn.addEventListener('click', function(){
-      setOpen(!document.body.classList.contains('nav-open'));
-    });
+    ready(function(){
+      var btn = document.querySelector('.nav-toggle');
+      var nav = document.getElementById('site-nav');
+      if(!btn || !nav) return;
 
-    // Close on link click (mobile)
-    nav.addEventListener('click', function(e){
-      var a = e.target.closest('a');
-      if(!a) return;
-      setOpen(false);
-    });
+      function setOpen(open){
+        document.body.classList.toggle('nav-open', open);
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      }
 
-    // Close on escape
-    document.addEventListener('keydown', function(e){
-      if(e.key === 'Escape') setOpen(false);
-    });
+      btn.addEventListener('click', function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        setOpen(!document.body.classList.contains('nav-open'));
+      });
 
-    // Close when resizing up to desktop
-    window.addEventListener('resize', function(){
-      if(window.innerWidth > 860) setOpen(false);
+      // Close when tapping outside
+      document.addEventListener('click', function(e){
+        if(!document.body.classList.contains('nav-open')) return;
+        if(e.target.closest('#site-nav') || e.target.closest('.nav-toggle')) return;
+        setOpen(false);
+      });
+
+      // Close on link click
+      nav.addEventListener('click', function(e){
+        var a = e.target.closest('a');
+        if(!a) return;
+        setOpen(false);
+      });
+
+      // Close on escape
+      document.addEventListener('keydown', function(e){
+        if(e.key === 'Escape') setOpen(false);
+      });
+
+      // Close on resize to desktop
+      window.addEventListener('resize', function(){
+        if(window.innerWidth > 860) setOpen(false);
+      });
     });
   })();
 </script>
