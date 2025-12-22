@@ -854,52 +854,6 @@ Added:
   .mobile-fab{display:none !important;}
 }
 
-/* Mobile menu: full-sheet + scrim (stable across in-app browsers) */
-.menu-scrim{
-  display:none;
-  position:fixed;
-  inset:0;
-  background: rgba(0,0,0,0.62);
-  backdrop-filter: blur(6px);
-  z-index: 80;
-}
-@media (max-width: 860px){
-  #site-nav{display:none;}
-  body.nav-open .menu-scrim{display:block;}
-  body.nav-open #site-nav{
-    display:block;
-    position:fixed;
-    left: 16px;
-    right: 16px;
-    top: 88px;
-    border-radius: 20px;
-    border: 1px solid rgba(255,255,255,0.10);
-    background: rgba(0,0,0,0.78);
-    box-shadow: 0 30px 110px rgba(0,0,0,0.80);
-    backdrop-filter: blur(10px);
-    padding: 1.05rem 1.05rem;
-    z-index: 90;
-  }
-  body.nav-open #site-nav .nav-links{
-    display:grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.8rem 0.75rem;
-    align-items:center;
-  }
-  body.nav-open #site-nav .nav-link{
-    padding: 0.55rem 0.25rem;
-    font-size: 0.92rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.82);
-  }
-  body.nav-open #site-nav .nav-cta{
-    grid-column: 1 / -1;
-    justify-content:center;
-    margin-top: 0.15rem;
-  }
-}
-
 /* Sticky CTA bar (mobile only) */
 .mobile-cta{
   display:none;
@@ -953,6 +907,88 @@ Added:
 @media (min-width: 861px){
   .mobile-cta{display:none;}
 }
+
+/* Mobile menu overlay (ITER12: fixed for iOS/Messenger) */
+.mm-scrim{
+  display:none;
+  position:fixed;
+  inset:0;
+  background: rgba(0,0,0,0.70);
+  z-index: 200;
+}
+.mm-panel{
+  display:none;
+  position:fixed;
+  left: 16px;
+  right: 16px;
+  top: 84px;
+  z-index: 210;
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(0,0,0,0.86);
+  box-shadow: 0 30px 120px rgba(0,0,0,0.86);
+  padding: 0.95rem 0.95rem 1.05rem;
+}
+.mm-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding: 0.25rem 0.15rem 0.85rem;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.mm-title{
+  font-size: 0.86rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.70);
+}
+.mm-close{
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.04);
+  color: rgba(255,255,255,0.80);
+  font-size: 22px;
+  line-height: 1;
+}
+.mm-grid{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.85rem 0.75rem;
+  padding: 0.95rem 0.15rem 0.15rem;
+}
+.mm-link{
+  padding: 0.7rem 0.25rem;
+  text-decoration:none;
+  font-size: 0.92rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.84);
+}
+.mm-cta{
+  grid-column: 1 / -1;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding: 0.95rem 1rem;
+  border-radius: 14px;
+  border: 1px solid rgba(212,175,55,0.85);
+  background: linear-gradient(180deg, rgba(212,175,55,0.24), rgba(212,175,55,0.10));
+  color: rgba(250,245,232,0.96);
+  text-decoration:none;
+  font-weight: 750;
+  letter-spacing: 0.03em;
+}
+@media (max-width: 860px){
+  #site-nav{display:none !important;} /* keep header simple; overlay provides nav */
+  body.mm-open{overflow:hidden;}
+  body.mm-open .mm-scrim{display:block;}
+  body.mm-open .mm-panel{display:block;}
+}
+@media (min-width: 861px){
+  .mm-scrim,.mm-panel{display:none !important;}
+}
 </style>
 </head>
 
@@ -966,7 +1002,7 @@ Added:
           <img src="assets/meridian-wordmark.png" alt="Meridian" />
         </a>
 
-        <button class="nav-toggle" type="button" aria-controls="site-nav" aria-expanded="false" aria-label="Open menu"><span class="nav-toggle-inner" aria-hidden="true"><span></span><span></span><span></span></span><span class="nav-toggle-text">Menu</span></button>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-label="Open menu"><span class="nav-toggle-inner" aria-hidden="true"><span></span><span></span><span></span></span><span class="nav-toggle-text">Menu</span></button>
 
         <nav id="site-nav" id="site-nav" aria-label="Primary" data-open="false">
           <a class="nav-link" href="#services">Services</a>
@@ -1606,17 +1642,25 @@ Added:
     </div>
   </div>
 </footer>
-
-
-
-
-
-
-
-  <div class="menu-scrim" aria-hidden="true"></div>
-  <div class="mobile-cta" aria-label="Quick contact">
+<div class="mobile-cta" aria-label="Quick contact">
     <a class="mobile-cta-btn" href="#contact">Contact</a>
     <a class="mobile-cta-link" href="mailto:meridianaiautomations@gmail.com">Email</a>
+  </div>
+
+  <div class="mm-scrim" aria-hidden="true"></div>
+  <div class="mm-panel" role="dialog" aria-modal="true" aria-label="Site menu">
+    <div class="mm-head">
+      <div class="mm-title">MENU</div>
+      <button class="mm-close" type="button" aria-label="Close menu">×</button>
+    </div>
+    <div class="mm-grid">
+      <a class="mm-link" href="#services">SERVICES</a>
+      <a class="mm-link" href="#process">PROCESS</a>
+      <a class="mm-link" href="#about">ABOUT</a>
+      <a class="mm-link" href="#proof">PROOF</a>
+      <a class="mm-link" href="#faq">FAQ</a>
+      <a class="mm-cta" href="#contact">CONTACT</a>
+    </div>
   </div>
 
 
@@ -1626,15 +1670,15 @@ Added:
       if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn);
       else fn();
     }
-
     ready(function(){
       var btn = document.querySelector('.nav-toggle');
-      var nav = document.getElementById('site-nav');
-      var scrim = document.querySelector('.menu-scrim');
-      if(!btn || !nav || !scrim) return;
+      var scrim = document.querySelector('.mm-scrim');
+      var panel = document.querySelector('.mm-panel');
+      var closeBtn = document.querySelector('.mm-close');
+      if(!btn || !scrim || !panel) return;
 
       function setOpen(open){
-        document.body.classList.toggle('nav-open', open);
+        document.body.classList.toggle('mm-open', open);
         btn.setAttribute('aria-expanded', open ? 'true' : 'false');
         btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
         scrim.setAttribute('aria-hidden', open ? 'false' : 'true');
@@ -1643,12 +1687,13 @@ Added:
       btn.addEventListener('click', function(e){
         e.preventDefault();
         e.stopPropagation();
-        setOpen(!document.body.classList.contains('nav-open'));
+        setOpen(!document.body.classList.contains('mm-open'));
       });
 
+      if(closeBtn) closeBtn.addEventListener('click', function(){ setOpen(false); });
       scrim.addEventListener('click', function(){ setOpen(false); });
 
-      nav.addEventListener('click', function(e){
+      panel.addEventListener('click', function(e){
         var a = e.target.closest('a');
         if(!a) return;
         setOpen(false);
