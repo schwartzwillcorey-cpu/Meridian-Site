@@ -567,7 +567,7 @@ Added:
       color:rgba(242,239,234,0.70);
       margin-bottom:8px;
     }
-    input, textarea{
+    input, textarea, select{
       width:100%;
       padding:14px 12px;
       border-radius:10px;
@@ -660,7 +660,7 @@ Added:
   .nav-brand{gap:0.65rem;}
   .hero .hero-actions{flex-direction:column;align-items:flex-start;}
   .hero .hero-actions a{width:100%;justify-content:center;}
-  input, textarea{font-size:16px;} /* prevent iOS zoom */
+  input, textarea, select{font-size:16px;} /* prevent iOS zoom */
 }
 /* Signals block */
 .signals{margin-top:3.5rem;padding-top:2.5rem;border-top:1px solid rgba(255,255,255,0.08);}
@@ -988,6 +988,16 @@ Added:
 }
 @media (min-width: 861px){
   .mm-scrim,.mm-panel{display:none !important;}
+}
+
+/* Dropdown option visibility fix */
+select option {
+  background-color: #0b0c0f;
+  color: #f2efe6;
+}
+select option:checked {
+  background-color: #14161b;
+  color: #f2efe6;
 }
 </style>
 </head>
@@ -1592,10 +1602,23 @@ Added:
               <input id="company_website" name="company_website" tabindex="-1" autocomplete="off" />
             </div>
 
+
             <div>
-              <label for="message">Message</label>
-              <textarea id="message" name="message" required>
-              </textarea>
+              <label for="focus">Area of focus (optional)</label>
+              <select id="focus" name="focus">
+                <option value="">— Select one —</option>
+                <option>Lead intake &amp; routing</option>
+                <option>Internal ops workflows</option>
+                <option>Follow-ups &amp; notifications</option>
+                <option>Reporting &amp; visibility</option>
+                <option>Audit / cleanup</option>
+                <option>Not sure yet</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="message">What are you trying to automate or improve?</label>
+              <textarea id="message" name="message" required placeholder="Example: leads aren’t getting assigned, follow-ups slip, handoffs are messy, or reporting takes too long."></textarea>
             </div>
 
             <div class="form-actions">
