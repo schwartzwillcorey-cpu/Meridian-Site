@@ -853,6 +853,106 @@ Added:
   #site-nav{display:block !important; position:static !important; width:auto !important; padding:0 !important; background:transparent !important; border:none !important; box-shadow:none !important;}
   .mobile-fab{display:none !important;}
 }
+
+/* Mobile menu: full-sheet + scrim (stable across in-app browsers) */
+.menu-scrim{
+  display:none;
+  position:fixed;
+  inset:0;
+  background: rgba(0,0,0,0.62);
+  backdrop-filter: blur(6px);
+  z-index: 80;
+}
+@media (max-width: 860px){
+  #site-nav{display:none;}
+  body.nav-open .menu-scrim{display:block;}
+  body.nav-open #site-nav{
+    display:block;
+    position:fixed;
+    left: 16px;
+    right: 16px;
+    top: 88px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.10);
+    background: rgba(0,0,0,0.78);
+    box-shadow: 0 30px 110px rgba(0,0,0,0.80);
+    backdrop-filter: blur(10px);
+    padding: 1.05rem 1.05rem;
+    z-index: 90;
+  }
+  body.nav-open #site-nav .nav-links{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.8rem 0.75rem;
+    align-items:center;
+  }
+  body.nav-open #site-nav .nav-link{
+    padding: 0.55rem 0.25rem;
+    font-size: 0.92rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.82);
+  }
+  body.nav-open #site-nav .nav-cta{
+    grid-column: 1 / -1;
+    justify-content:center;
+    margin-top: 0.15rem;
+  }
+}
+
+/* Sticky CTA bar (mobile only) */
+.mobile-cta{
+  display:none;
+  position:fixed;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  z-index: 70;
+  padding: 10px 10px;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 22px 80px rgba(0,0,0,0.70);
+  gap: 10px;
+  align-items:center;
+  justify-content:space-between;
+}
+.mobile-cta-btn{
+  flex: 1;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding: 0.92rem 1rem;
+  border-radius: 14px;
+  border: 1px solid rgba(212,175,55,0.85);
+  background: linear-gradient(180deg, rgba(212,175,55,0.24), rgba(212,175,55,0.10));
+  color: rgba(250,245,232,0.96);
+  text-decoration:none;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+.mobile-cta-link{
+  width: 92px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding: 0.92rem 0.8rem;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(0,0,0,0.22);
+  color: rgba(255,255,255,0.82);
+  text-decoration:none;
+  font-weight: 650;
+}
+.mobile-cta-btn:active, .mobile-cta-link:active{transform: translateY(1px);}
+@media (max-width: 860px){
+  .mobile-cta{display:flex;}
+  body{padding-bottom: 96px;}
+}
+@media (min-width: 861px){
+  .mobile-cta{display:none;}
+}
 </style>
 </head>
 
@@ -1512,22 +1612,32 @@ Added:
 
 
 
+
+  <div class="menu-scrim" aria-hidden="true"></div>
+  <div class="mobile-cta" aria-label="Quick contact">
+    <a class="mobile-cta-btn" href="#contact">Contact</a>
+    <a class="mobile-cta-link" href="mailto:meridianaiautomations@gmail.com">Email</a>
+  </div>
+
+
 <script>
   (function(){
     function ready(fn){
-      if(document.readyState === 'loading'){ document.addEventListener('DOMContentLoaded', fn); }
-      else { fn(); }
+      if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn);
+      else fn();
     }
 
     ready(function(){
       var btn = document.querySelector('.nav-toggle');
       var nav = document.getElementById('site-nav');
-      if(!btn || !nav) return;
+      var scrim = document.querySelector('.menu-scrim');
+      if(!btn || !nav || !scrim) return;
 
       function setOpen(open){
         document.body.classList.toggle('nav-open', open);
         btn.setAttribute('aria-expanded', open ? 'true' : 'false');
         btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+        scrim.setAttribute('aria-hidden', open ? 'false' : 'true');
       }
 
       btn.addEventListener('click', function(e){
@@ -1536,26 +1646,18 @@ Added:
         setOpen(!document.body.classList.contains('nav-open'));
       });
 
-      // Close when tapping outside
-      document.addEventListener('click', function(e){
-        if(!document.body.classList.contains('nav-open')) return;
-        if(e.target.closest('#site-nav') || e.target.closest('.nav-toggle')) return;
-        setOpen(false);
-      });
+      scrim.addEventListener('click', function(){ setOpen(false); });
 
-      // Close on link click
       nav.addEventListener('click', function(e){
         var a = e.target.closest('a');
         if(!a) return;
         setOpen(false);
       });
 
-      // Close on escape
       document.addEventListener('keydown', function(e){
         if(e.key === 'Escape') setOpen(false);
       });
 
-      // Close on resize to desktop
       window.addEventListener('resize', function(){
         if(window.innerWidth > 860) setOpen(false);
       });
