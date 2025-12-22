@@ -999,6 +999,15 @@ select option:checked {
   background-color: #14161b;
   color: #f2efe6;
 }
+
+/* Contact form submission status */
+.form-status{
+  margin-top:14px;
+  font-size:0.95rem;
+  color: var(--gold);
+  display:none;
+}
+.form-status.error{ color:#c96b6b; }
 </style>
 </head>
 
@@ -1731,6 +1740,62 @@ select option:checked {
       });
     });
   })();
+</script>
+
+
+<script>
+/* Meridian contact form → Zapier Catch Hook
+   1) Create your Zap in Zapier: Webhooks by Zapier → Catch Hook
+   2) Paste the Catch Hook URL below
+*/
+const ZAPIER_WEBHOOK_URL = "https://hooks.zapier.com/hooks/catch/24223571/uaalo64/";
+
+(function(){
+  const form = document.querySelector("#contactForm");
+  const status = document.querySelector("#formStatus");
+  if(!form) return;
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    if(status){
+      status.style.display = "none";
+      status.classList.remove("error");
+      status.textContent = "";
+    }
+
+    const payload = {
+      name: (form.name?.value || "").trim(),
+      email: (form.email?.value || "").trim(),
+      focus: (form.focus?.value || "").trim(),
+      message: (form.message?.value || "").trim(),
+      page: window.location.pathname + window.location.hash,
+      userAgent: navigator.userAgent
+    };
+
+    try{
+      const res = await fetch(ZAPIER_WEBHOOK_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+
+      if(!res.ok) throw new Error("Request failed");
+
+      form.reset();
+      if(status){
+        status.textContent = "Thanks — we received your note and will reply with next steps.";
+        status.style.display = "block";
+      }
+    }catch(err){
+      if(status){
+        status.textContent = "Something went wrong. Please email us directly.";
+        status.classList.add("error");
+        status.style.display = "block";
+      }
+    }
+  });
+})();
 </script>
 
 </body>
