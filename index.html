@@ -1000,14 +1000,24 @@ select option:checked {
   color: #f2efe6;
 }
 
+
+
 /* Contact form submission status */
 .form-status{
   margin-top:14px;
+  padding:12px 14px;
   font-size:0.95rem;
-  color: var(--gold);
+  border-radius:10px;
   display:none;
+  background: rgba(214, 177, 95, 0.12);
+  border: 1px solid rgba(214, 177, 95, 0.45);
+  color: #f0d88a;
 }
-.form-status.error{ color:#c96b6b; }
+.form-status.error{
+  background: rgba(201, 107, 107, 0.15);
+  border-color: rgba(201, 107, 107, 0.65);
+  color: #f2b3b3;
+}
 </style>
 </head>
 
@@ -1774,22 +1784,28 @@ const ZAPIER_WEBHOOK_URL = "https://hooks.zapier.com/hooks/catch/24223571/uaalo6
     };
 
     try{
-      const res = await fetch(ZAPIER_WEBHOOK_URL, {
+      const body = new URLSearchParams();
+      body.append("name", payload.name);
+      body.append("email", payload.email);
+      body.append("focus", payload.focus);
+      body.append("message", payload.message);
+      body.append("page", payload.page);
+      body.append("userAgent", payload.userAgent);
+
+await fetch(ZAPIER_WEBHOOK_URL, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
+        mode: "no-cors",
+        headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
+        body: body.toString()
       });
-
-      if(!res.ok) throw new Error("Request failed");
-
-      form.reset();
+form.reset();
       if(status){
         status.textContent = "Thanks — we received your note and will reply with next steps.";
         status.style.display = "block";
       }
     }catch(err){
       if(status){
-        status.textContent = "Something went wrong. Please email us directly.";
+        status.textContent = "Submission failed. Please try again, or email us directly at meridianiautomations@gmail.com.";
         status.classList.add("error");
         status.style.display = "block";
       }
