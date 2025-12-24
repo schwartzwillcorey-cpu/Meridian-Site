@@ -28,6 +28,10 @@ Added:
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#0F0F12" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; font-src 'self' https://fonts.gstatic.com; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; connect-src https://hooks.zapier.com; base-uri 'self'; form-action 'self' https://hooks.zapier.com; upgrade-insecure-requests">
+  <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <title>Meridian — Websites & Automation</title>
   <meta name="description" content="Meridian builds premium websites and practical automations that remove friction—so your business runs cleaner, faster, and with fewer mistakes." />
 
@@ -636,6 +640,25 @@ Added:
 .footer-line{height:1px;background:rgba(255,255,255,0.08);margin-bottom:1.25rem;}
 .footer-legal{display:flex;flex-wrap:wrap;gap:.75rem;align-items:center;color:rgba(255,255,255,0.55);font-size:.9rem;}
 .footer-legal .dot{opacity:0.5;}
+.social-links{display:flex;align-items:center;gap:10px;margin-top:0.85rem;}
+.social-link{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  height:38px;
+  width:38px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,0.12);
+  background:rgba(255,255,255,0.04);
+  color:rgba(255,255,255,0.82);
+  transition:transform 120ms ease, border-color 120ms ease, background 120ms ease;
+}
+.social-link:hover{
+  transform:translateY(-1px);
+  border-color:rgba(201,162,77,0.7);
+  background:rgba(201,162,77,0.08);
+  color:#f2efe6;
+}
 
 
 
@@ -1009,14 +1032,24 @@ select option:checked {
   font-size:0.95rem;
   border-radius:10px;
   display:none;
-  background: rgba(214, 177, 95, 0.12);
-  border: 1px solid rgba(214, 177, 95, 0.45);
-  color: #f0d88a;
+  background: rgba(214, 177, 95, 0.16);
+  border: 1px solid rgba(214, 177, 95, 0.62);
+  color: #f7e6b2;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.24);
+  font-weight:600;
+}
+.form-status.success{
+  background: rgba(214, 177, 95, 0.22);
+  border-color: rgba(214, 177, 95, 0.78);
+  color: #fff6cf;
 }
 .form-status.error{
   background: rgba(201, 107, 107, 0.15);
   border-color: rgba(201, 107, 107, 0.65);
   color: #f2b3b3;
+}
+.form-status strong{
+  color:#fff;
 }
 </style>
 </head>
@@ -1601,7 +1634,18 @@ select option:checked {
         <div class="motif-inner">
           <h2>Contact</h2>
           <p class="section-lead">If you’re serious about reducing friction, send a note. We’ll respond with a clear next step.</p>
-          <p class="note">Prefer email? <a href="mailto:meridianaiautomations@gmail.com" style="color:rgba(201,162,77,0.92);">meridianaiautomations@gmail.com</a></p>
+          <p class="note">
+            Prefer email? <a href="mailto:meridianaiautomations@gmail.com" style="color:rgba(201,162,77,0.92);">meridianaiautomations@gmail.com</a>
+            <span style="display:inline-flex; align-items:center; gap:8px; margin-left:12px;">
+              <span style="color:rgba(242,239,234,0.78); font-size:0.95rem;">Like/follow us on Facebook</span>
+              <a class="social-link" href="https://www.facebook.com/profile.php?id=61585159423345" target="_blank" rel="noopener noreferrer" aria-label="Meridian on Facebook">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path fill="currentColor" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.88v-6.99H7.898v-2.89h2.54V9.845c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562v1.875h2.773l-.443 2.89h-2.33v6.99C18.343 21.128 22 16.991 22 12Z"/>
+                </svg>
+              </a>
+            </span>
+          </p>
+          <p class="note">By submitting, you agree we may contact you about your request. We don’t sell your information.</p>
 
           <form id="contactForm" novalidate>
             <div class="form-row">
@@ -1642,7 +1686,7 @@ select option:checked {
 
             <div class="form-actions">
               <button class="btn btn-primary" id="submitBtn" type="submit">Send</button>
-              <div class="status" id="formStatus" aria-live="polite"></div>
+              <div class="form-status" id="formStatus" aria-live="polite"></div>
             </div>
 
             <div class="note">We keep engagements focused. If you can share your current workflow and tools, we’ll move faster.</div>
@@ -1671,7 +1715,15 @@ select option:checked {
     <div class="footer-contact">
       <div class="footer-label">Contact</div>
       <a class="footer-email" href="mailto:meridianaiautomations@gmail.com">meridianaiautomations@gmail.com</a>
-      <div class="footer-meta">Response within 1–2 business days.</div>
+      <div class="footer-meta">Response within 1—2 business days.</div>
+      <div class="social-links" aria-label="Social links">
+        <span style="font-size:0.9rem; color:rgba(242,239,234,0.75);">Like/follow us on Facebook</span>
+        <a class="social-link" href="https://www.facebook.com/profile.php?id=61585159423345" target="_blank" rel="noopener noreferrer" aria-label="Meridian on Facebook">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path fill="currentColor" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.88v-6.99H7.898v-2.89h2.54V9.845c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562v1.875h2.773l-.443 2.89h-2.33v6.99C18.343 21.128 22 16.991 22 12Z"/>
+          </svg>
+        </a>
+      </div>
     </div>
   </div>
 
@@ -1759,6 +1811,9 @@ select option:checked {
    2) Paste the Catch Hook URL below
 */
 const ZAPIER_WEBHOOK_URL = "https://hooks.zapier.com/hooks/catch/24223571/uaalo64/";
+const FORM_SHARED_SECRET = "REPLACE_WITH_SECRET"; // set this in Zapier Filter/Code step and match here
+const MIN_SUBMIT_INTERVAL_MS = 5000;
+let lastSubmitTs = 0;
 
 (function(){
   const form = document.querySelector("#contactForm");
@@ -1770,8 +1825,28 @@ const ZAPIER_WEBHOOK_URL = "https://hooks.zapier.com/hooks/catch/24223571/uaalo6
 
     if(status){
       status.style.display = "none";
-      status.classList.remove("error");
+      status.className = "form-status";
       status.textContent = "";
+    }
+
+    const now = Date.now();
+    if(now - lastSubmitTs < MIN_SUBMIT_INTERVAL_MS){
+      if(status){
+        status.textContent = "Please wait a moment before submitting again.";
+        status.classList.add("error");
+        status.style.display = "block";
+      }
+      return;
+    }
+
+    const honeypot = (form.company_website?.value || "").trim();
+    if(honeypot){
+      return; // silently drop bot submission
+    }
+
+    if(!form.checkValidity()){
+      form.reportValidity();
+      return;
     }
 
     const payload = {
@@ -1780,8 +1855,26 @@ const ZAPIER_WEBHOOK_URL = "https://hooks.zapier.com/hooks/catch/24223571/uaalo6
       focus: (form.focus?.value || "").trim(),
       message: (form.message?.value || "").trim(),
       page: window.location.pathname + window.location.hash,
-      userAgent: navigator.userAgent
+      userAgent: navigator.userAgent,
+      submissionId: (crypto.randomUUID ? crypto.randomUUID() : String(Date.now())),
+      formSecret: FORM_SHARED_SECRET
     };
+
+    const errors = [];
+    if(!payload.name) errors.push("Please add your name.");
+    if(!payload.email) errors.push("Please add your email.");
+    else if(!/^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$/.test(payload.email)) errors.push("Please enter a valid email.");
+
+    if(errors.length){
+      if(status){
+        status.textContent = errors.join(" ");
+        status.classList.add("error");
+        status.style.display = "block";
+      }
+      const focusTarget = (!payload.name && form.name) ? form.name : (!payload.email && form.email) ? form.email : form.email;
+      if(focusTarget && typeof focusTarget.focus === "function") focusTarget.focus();
+      return;
+    }
 
     try{
       const body = new URLSearchParams();
@@ -1791,6 +1884,8 @@ const ZAPIER_WEBHOOK_URL = "https://hooks.zapier.com/hooks/catch/24223571/uaalo6
       body.append("message", payload.message);
       body.append("page", payload.page);
       body.append("userAgent", payload.userAgent);
+      body.append("submissionId", payload.submissionId);
+      body.append("formSecret", payload.formSecret);
 
 await fetch(ZAPIER_WEBHOOK_URL, {
         method: "POST",
@@ -1800,9 +1895,11 @@ await fetch(ZAPIER_WEBHOOK_URL, {
       });
 form.reset();
       if(status){
-        status.textContent = "Thanks — we received your note and will reply with next steps.";
+        status.textContent = "Thank you - your note is in. We will reach out shortly with next steps.";
+        status.classList.add("success");
         status.style.display = "block";
       }
+      lastSubmitTs = now;
     }catch(err){
       if(status){
         status.textContent = "Submission failed. Please try again, or email us directly at meridianiautomations@gmail.com.";
