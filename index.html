@@ -1051,6 +1051,27 @@ select option:checked {
 .form-status strong{
   color:#fff;
 }
+.checkbox-group{
+  display:grid;
+  gap:10px;
+  margin-top:10px;
+}
+.checkbox-option{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  padding:12px 12px;
+  border:1px solid var(--border2);
+  border-radius:10px;
+  background:rgba(255,255,255,0.02);
+}
+.checkbox-option input[type="checkbox"]{
+  width:18px;
+  height:18px;
+  margin-top:2px;
+  flex:0 0 auto;
+  accent-color: rgba(212,175,55,0.85);
+}
 </style>
 </head>
 
@@ -1680,8 +1701,38 @@ select option:checked {
             </div>
 
             <div>
-              <label for="message">What are you trying to automate or improve?</label>
-              <textarea id="message" name="message" required placeholder="Example: leads aren’t getting assigned, follow-ups slip, handoffs are messy, or reporting takes too long."></textarea>
+              <label for="issues">What best describes what you’re looking to improve? (optional)</label>
+              <div class="checkbox-group" id="issues">
+                <label class="checkbox-option">
+                  <input type="checkbox" name="issues[]" value="Leads not being followed up" />
+                  <span>Leads not being followed up</span>
+                </label>
+                <label class="checkbox-option">
+                  <input type="checkbox" name="issues[]" value="Missed calls or slow response" />
+                  <span>Missed calls or slow response</span>
+                </label>
+                <label class="checkbox-option">
+                  <input type="checkbox" name="issues[]" value="Manual data entry" />
+                  <span>Manual data entry</span>
+                </label>
+                <label class="checkbox-option">
+                  <input type="checkbox" name="issues[]" value="Scheduling or booking issues" />
+                  <span>Scheduling or booking issues</span>
+                </label>
+                <label class="checkbox-option">
+                  <input type="checkbox" name="issues[]" value="Reporting or visibility problems" />
+                  <span>Reporting or visibility problems</span>
+                </label>
+                <label class="checkbox-option">
+                  <input type="checkbox" name="issues[]" value="Not sure yet" />
+                  <span>Not sure yet</span>
+                </label>
+              </div>
+            </div>
+
+            <div>
+              <label for="notes">Anything you want us to know? (optional)</label>
+              <textarea id="notes" name="notes" placeholder="Share details, examples, links (optional)."></textarea>
             </div>
 
             <div class="form-actions">
@@ -1849,11 +1900,17 @@ let lastSubmitTs = 0;
       return;
     }
 
+    const issues = Array.from(form.querySelectorAll('input[name="issues[]"]:checked')).map(cb => cb.value);
+
+    const notesValue = (form.notes?.value || "").trim();
+
     const payload = {
       name: (form.name?.value || "").trim(),
       email: (form.email?.value || "").trim(),
       focus: (form.focus?.value || "").trim(),
-      message: (form.message?.value || "").trim(),
+      issues,
+      notes: notesValue,
+      message: notesValue, // keep legacy key for downstream compatibility
       page: window.location.pathname + window.location.hash,
       userAgent: navigator.userAgent,
       submissionId: (crypto.randomUUID ? crypto.randomUUID() : String(Date.now())),
@@ -1881,6 +1938,9 @@ let lastSubmitTs = 0;
       body.append("name", payload.name);
       body.append("email", payload.email);
       body.append("focus", payload.focus);
+      body.append("issues", payload.issues.join(", "));
+      payload.issues.forEach(issue => body.append("issues[]", issue));
+      body.append("notes", payload.notes);
       body.append("message", payload.message);
       body.append("page", payload.page);
       body.append("userAgent", payload.userAgent);
