@@ -1920,7 +1920,7 @@ let lastSubmitTs = 0;
     const errors = [];
     if(!payload.name) errors.push("Please add your name.");
     if(!payload.email) errors.push("Please add your email.");
-    else if(!/^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$/.test(payload.email)) errors.push("Please enter a valid email.");
+    else if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(payload.email)) errors.push("Please enter a valid email.");
 
     if(errors.length){
       if(status){
