@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0F0F12" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; font-src 'self' https://fonts.gstatic.com; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; connect-src https://hooks.zapier.com; base-uri 'self'; form-action 'self' https://hooks.zapier.com; upgrade-insecure-requests">
+  <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <title>Contact — Meridian</title>
+  <meta name="description" content="Get in touch with Meridian. We'll respond with a clear next step." />
+
+  <style>
+    :root{
+      --bg:#0F0F12;
+      --fg:#F2EFEA;
+      --muted:rgba(242,239,234,0.72);
+      --muted2:rgba(242,239,234,0.56);
+      --gold:#C9A24D;
+      --goldSoft:rgba(201,162,77,0.22);
+      --border:rgba(242,239,234,0.10);
+      --border2:rgba(242,239,234,0.06);
+      --radius:10px;
+      --max:1120px;
+      --serif: ui-serif, Georgia, "Times New Roman", Times, serif;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      --focus: rgba(201,162,77,0.55);
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth; min-height:100%;}
+    body{
+      margin:0;
+      font-family:var(--sans);
+      background:var(--bg);
+      color:var(--fg);
+      text-rendering:optimizeLegibility;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      background-image:
+        radial-gradient(900px 520px at 12% 8%, rgba(201,162,77,0.05), transparent 60%),
+        radial-gradient(820px 520px at 88% 18%, rgba(255,255,255,0.04), transparent 62%),
+        linear-gradient(to bottom, rgba(255,255,255,0.02), transparent 18%),
+        repeating-linear-gradient(0deg, rgba(255,255,255,0.012), rgba(255,255,255,0.012) 1px, transparent 1px, transparent 10px);
+      background-attachment:fixed;
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+    }
+
+    /* Header */
+    .header{
+      position:relative;
+      z-index:100;
+      background:rgba(15,15,18,0.80);
+      backdrop-filter:blur(16px);
+      border-bottom:1px solid var(--border);
+    }
+    .header-inner{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:18px 24px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .logo{
+      font-size:1.5rem;
+      font-weight:600;
+      color:var(--fg);
+      text-decoration:none;
+      letter-spacing:-0.02em;
+    }
+    .logo img{
+      height:32px;
+      width:auto;
+      vertical-align:middle;
+    }
+
+    /* Main content */
+    main{
+      flex:1;
+      display:flex;
+      align-items:center;
+      padding:64px 24px;
+    }
+    .container{
+      max-width:680px;
+      margin:0 auto;
+      width:100%;
+    }
+    h1{
+      font-size:clamp(2.4rem, 5vw, 3.2rem);
+      line-height:1.15;
+      margin:0 0 18px;
+      font-weight:600;
+      letter-spacing:-0.03em;
+    }
+    .lead{
+      font-size:1.175rem;
+      line-height:1.6;
+      color:var(--muted);
+      margin:0 0 24px;
+      max-width:600px;
+    }
+    .note{
+      font-size:0.95rem;
+      line-height:1.6;
+      color:var(--muted2);
+      margin:12px 0;
+    }
+    .note a{
+      color:var(--gold);
+      text-decoration:none;
+      transition:color 0.15s;
+    }
+    .note a:hover{
+      color:var(--fg);
+    }
+
+    /* Form */
+    form{
+      margin-top:32px;
+    }
+    label{
+      display:block;
+      font-size:0.95rem;
+      font-weight:500;
+      margin-bottom:8px;
+      color:var(--fg);
+    }
+    input, select, textarea{
+      width:100%;
+      padding:12px 14px;
+      font-size:1rem;
+      font-family:inherit;
+      background:rgba(255,255,255,0.03);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      color:var(--fg);
+      transition:border-color 0.2s, background 0.2s;
+    }
+    input:focus, select:focus, textarea:focus{
+      outline:none;
+      border-color:var(--focus);
+      background:rgba(255,255,255,0.05);
+    }
+    textarea{
+      min-height:140px;
+      resize:vertical;
+    }
+    .form-row{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:16px;
+      margin-bottom:16px;
+    }
+    .form-row > div{
+      display:flex;
+      flex-direction:column;
+    }
+    form > div{
+      margin-bottom:16px;
+    }
+
+    .checkbox-group{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .checkbox-option{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      cursor:pointer;
+      padding:10px;
+      border:1px solid var(--border2);
+      border-radius:8px;
+      transition:background 0.15s, border-color 0.15s;
+    }
+    .checkbox-option:hover{
+      background:rgba(255,255,255,0.03);
+      border-color:var(--border);
+    }
+    .checkbox-option input{
+      width:auto;
+      margin:0;
+      cursor:pointer;
+    }
+    .checkbox-option span{
+      font-size:0.975rem;
+      color:var(--muted);
+    }
+
+    .form-actions{
+      margin-top:24px;
+      display:flex;
+      align-items:center;
+      gap:16px;
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:14px 28px;
+      font-size:1.025rem;
+      font-weight:500;
+      text-decoration:none;
+      border-radius:var(--radius);
+      transition:background 0.2s, color 0.2s, border-color 0.2s, transform 0.15s;
+      cursor:pointer;
+      border:none;
+      font-family:inherit;
+    }
+    .btn-primary{
+      background:var(--gold);
+      color:#0F0F12;
+      border:1px solid var(--gold);
+    }
+    .btn-primary:hover{
+      background:rgba(201,162,77,0.90);
+      transform:translateY(-1px);
+    }
+    .btn-primary:active{
+      transform:translateY(0);
+    }
+
+    .form-status{
+      font-size:0.95rem;
+      color:var(--muted);
+    }
+    .form-status.success{
+      color:var(--gold);
+    }
+    .form-status.error{
+      color:#ef4444;
+    }
+
+    /* Footer */
+    footer{
+      border-top:1px solid var(--border);
+      padding:32px 24px;
+      text-align:center;
+    }
+    footer .container{
+      max-width:var(--max);
+    }
+    .footer-text{
+      font-size:0.9rem;
+      color:var(--muted2);
+      margin:0;
+    }
+    .footer-text a{
+      color:var(--gold);
+      text-decoration:none;
+    }
+    .footer-text a:hover{
+      color:var(--fg);
+    }
+
+    @media(max-width:640px){
+      .form-row{
+        grid-template-columns:1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <a href="/" class="logo">
+        <img src="assets/meridian-full.png" alt="Meridian" />
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <h1>Contact</h1>
+      <p class="lead">If you're serious about reducing friction, send a note. We'll respond with a clear next step.</p>
+      <p class="note">
+        Prefer email? <a href="mailto:meridianaiautomations@gmail.com">meridianaiautomations@gmail.com</a>
+      </p>
+      <p class="note">By submitting, you agree we may contact you about your request. We don't sell your information.</p>
+
+      <form id="contactForm" novalidate>
+        <div class="form-row">
+          <div>
+            <label for="name">Name</label>
+            <input id="name" name="name" autocomplete="name" required />
+          </div>
+          <div>
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" autocomplete="email" required />
+          </div>
+        </div>
+
+        <!-- Honeypot (hidden) -->
+        <div style="position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden;" aria-hidden="true">
+          <label for="company_website">Company website</label>
+          <input id="company_website" name="company_website" tabindex="-1" autocomplete="off" />
+        </div>
+
+        <div>
+          <label for="focus">Area of focus (optional)</label>
+          <select id="focus" name="focus">
+            <option value="">— Select one —</option>
+            <option>Lead intake &amp; routing</option>
+            <option>Internal ops workflows</option>
+            <option>Follow-ups &amp; notifications</option>
+            <option>Reporting &amp; visibility</option>
+            <option>Audit / cleanup</option>
+            <option>Not sure yet</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="issues">What best describes what you're looking to improve? (optional)</label>
+          <div class="checkbox-group" id="issues">
+            <label class="checkbox-option">
+              <input type="checkbox" name="issues[]" value="Leads not being followed up" />
+              <span>Leads not being followed up</span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" name="issues[]" value="Missed calls or slow response" />
+              <span>Missed calls or slow response</span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" name="issues[]" value="Manual data entry" />
+              <span>Manual data entry</span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" name="issues[]" value="Scheduling or booking issues" />
+              <span>Scheduling or booking issues</span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" name="issues[]" value="Reporting or visibility problems" />
+              <span>Reporting or visibility problems</span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" name="issues[]" value="Not sure yet" />
+              <span>Not sure yet</span>
+            </label>
+          </div>
+        </div>
+
+        <div>
+          <label for="notes">Anything you want us to know? (optional)</label>
+          <textarea id="notes" name="notes" placeholder="Share details, examples, links (optional)."></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button class="btn btn-primary" id="submitBtn" type="submit">Send</button>
+          <div class="form-status" id="formStatus" aria-live="polite"></div>
+        </div>
+
+        <div class="note">We keep engagements focused. If you can share your current workflow and tools, we'll move faster.</div>
+      </form>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p class="footer-text">&copy; 2024 Meridian. <a href="/">Back to home</a></p>
+    </div>
+  </footer>
+
+  <script>
+/* Meridian contact form → Zapier Catch Hook */
+const ZAPIER_URL = "https://hooks.zapier.com/hooks/catch/21042730/2uxf4pn/";
+
+(function(){
+  const form = document.querySelector("#contactForm");
+  const status = document.querySelector("#formStatus");
+  if(!form) return;
+
+  form.addEventListener("submit", async function(e){
+    e.preventDefault();
+
+    const btn = form.querySelector("#submitBtn");
+    const honeypot = form.querySelector('[name="company_website"]').value;
+    if(honeypot){
+      status.textContent = "Submission blocked.";
+      status.className = "form-status error";
+      return;
+    }
+
+    const fd = new FormData(form);
+    const data = {};
+    for(let [k,v] of fd.entries()){
+      if(k==="issues[]"){
+        if(!data.issues) data.issues=[];
+        data.issues.push(v);
+      }else{
+        data[k]=v;
+      }
+    }
+
+    btn.disabled = true;
+    btn.textContent = "Sending...";
+    status.textContent = "";
+    status.className = "form-status";
+
+    try{
+      const res = await fetch(ZAPIER_URL, {
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body: JSON.stringify(data)
+      });
+
+      if(!res.ok) throw new Error("Network error");
+
+      status.textContent = "Message sent! We'll respond soon.";
+      status.className = "form-status success";
+      form.reset();
+
+      setTimeout(()=>{
+        status.textContent = "";
+        status.className = "form-status";
+      }, 8000);
+
+    }catch(err){
+      console.error(err);
+      status.textContent = "Something went wrong. Please try email instead.";
+      status.className = "form-status error";
+    }finally{
+      btn.disabled = false;
+      btn.textContent = "Send";
+    }
+  });
+})();
+  </script>
+</body>
+</html>
