@@ -240,23 +240,116 @@
     /* Footer */
     footer{
       border-top:1px solid var(--border);
-      padding:32px 24px;
-      text-align:center;
+      padding:64px 24px 32px;
+      background:rgba(0,0,0,0.20);
     }
-    footer .container{
-      max-width:var(--max);
+    .footer-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr 1fr;
+      gap:48px;
+      margin-bottom:48px;
     }
-    .footer-text{
-      font-size:0.9rem;
+    .footer-brand{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    .footer-logo{
+      height:32px;
+      width:auto;
+      margin-bottom:8px;
+    }
+    .footer-tagline{
+      font-size:0.95rem;
+      line-height:1.6;
       color:var(--muted2);
       margin:0;
+      max-width:280px;
     }
-    .footer-text a{
+    .footer-nav{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    .footer-nav a{
+      color:var(--muted);
+      text-decoration:none;
+      font-size:0.95rem;
+      transition:color 0.2s;
+    }
+    .footer-nav a:hover{
+      color:var(--fg);
+    }
+    .footer-contact{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+    .footer-label{
+      font-size:0.85rem;
+      font-weight:600;
+      text-transform:uppercase;
+      letter-spacing:0.05em;
+      color:var(--muted2);
+      margin-bottom:4px;
+    }
+    .footer-email{
       color:var(--gold);
       text-decoration:none;
+      font-size:0.95rem;
+      transition:color 0.2s;
     }
-    .footer-text a:hover{
+    .footer-email:hover{
       color:var(--fg);
+    }
+    .footer-meta{
+      font-size:0.875rem;
+      color:var(--muted2);
+      margin-top:4px;
+    }
+    .social-links{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      margin-top:16px;
+    }
+    .social-link{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:36px;
+      height:36px;
+      background:rgba(255,255,255,0.03);
+      border:1px solid var(--border);
+      border-radius:50%;
+      color:var(--muted);
+      transition:background 0.2s, border-color 0.2s, color 0.2s;
+    }
+    .social-link:hover{
+      background:rgba(255,255,255,0.06);
+      border-color:var(--gold);
+      color:var(--gold);
+    }
+    .footer-bottom{
+      border-top:1px solid var(--border);
+      padding-top:24px;
+    }
+    .footer-legal{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:12px;
+      font-size:0.875rem;
+      color:var(--muted2);
+    }
+    .footer-legal .dot{
+      color:var(--border);
+    }
+    @media(max-width:768px){
+      .footer-grid{
+        grid-template-columns:1fr;
+        gap:32px;
+      }
     }
 
     @media(max-width:640px){
@@ -270,7 +363,7 @@
   <header class="header">
     <div class="header-inner">
       <a href="/" class="logo">
-        <img src="assets/meridian-full.png" alt="Meridian" />
+        <img src="assets/meridian-wordmark.png" alt="Meridian" />
       </a>
     </div>
   </header>
@@ -360,13 +453,50 @@
     </div>
   </main>
 
-  <footer>
-    <div class="container">
-      <p class="footer-text">&copy; 2024 Meridian. <a href="/">Back to home</a></p>
+  <footer class="site-footer" aria-label="Footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <img class="footer-logo" src="assets/meridian-wordmark.png" alt="Meridian" />
+        <p class="footer-tagline">Workflow automation built for clarity, reliability, and time returned.</p>
+      </div>
+
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <a href="/#services">Services</a>
+        <a href="/#process">Process</a>
+        <a href="/#about">About</a>
+        <a href="/#proof">Proof</a>
+        <a href="/#faq">FAQ</a>
+        <a href="/contact.html">Contact</a>
+      </nav>
+
+      <div class="footer-contact">
+        <div class="footer-label">Contact</div>
+        <a class="footer-email" href="mailto:meridianaiautomations@gmail.com">meridianaiautomations@gmail.com</a>
+        <div class="footer-meta">Response within 1—2 business days.</div>
+        <div class="social-links" aria-label="Social links">
+          <span style="font-size:0.9rem; color:rgba(242,239,234,0.75);">Like/follow us on Facebook</span>
+          <a class="social-link" href="https://www.facebook.com/profile.php?id=61585159423345" target="_blank" rel="noopener noreferrer" aria-label="Meridian on Facebook">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path fill="currentColor" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.88v-6.99H7.898v-2.89h2.54V9.845c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562v1.875h2.773l-.443 2.89h-2.33v6.99C18.343 21.128 22 16.991 22 12Z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <div class="footer-legal">
+        <span>© <span id="year"></span> Meridian</span>
+        <span class="dot">•</span>
+        <span>Operator-grade systems</span>
+      </div>
     </div>
   </footer>
 
   <script>
+// Set current year in footer
+document.getElementById('year').textContent = new Date().getFullYear();
+
 /* Meridian contact form → Zapier Catch Hook */
 const ZAPIER_URL = "https://hooks.zapier.com/hooks/catch/21042730/2uxf4pn/";
 
