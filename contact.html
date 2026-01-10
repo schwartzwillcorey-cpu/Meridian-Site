@@ -13,7 +13,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#0F0F12" />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: https://www.googletagmanager.com https://www.google-analytics.com; font-src 'self' https://fonts.gstatic.com; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; connect-src https://hooks.zapier.com https://www.google-analytics.com https://analytics.google.com; base-uri 'self'; form-action 'self' https://hooks.zapier.com; upgrade-insecure-requests">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: https://www.googletagmanager.com https://www.google-analytics.com; font-src 'self' https://fonts.gstatic.com; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; connect-src https://n8n.meridian-automations.com https://www.google-analytics.com https://analytics.google.com; base-uri 'self'; form-action 'self' https://n8n.meridian-automations.com; upgrade-insecure-requests">
   <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
   <meta http-equiv="X-Frame-Options" content="DENY">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
@@ -514,8 +514,8 @@
 // Set current year in footer
 document.getElementById('year').textContent = new Date().getFullYear();
 
-/* Meridian contact form → Zapier Catch Hook */
-const ZAPIER_URL = "https://hooks.zapier.com/hooks/catch/21042730/2uxf4pn/";
+/* Meridian contact form → n8n Webhook */
+const WEBHOOK_URL = "https://n8n.meridian-automations.com/webhook/a62fdfd5-0c7d-4cd4-bbb6-8fab6a715633";
 
 (function(){
   const form = document.querySelector("#contactForm");
@@ -550,7 +550,7 @@ const ZAPIER_URL = "https://hooks.zapier.com/hooks/catch/21042730/2uxf4pn/";
     status.className = "form-status";
 
     try{
-      const res = await fetch(ZAPIER_URL, {
+      const res = await fetch(WEBHOOK_URL, {
         method:"POST",
         headers:{"Content-Type":"application/json"},
         body: JSON.stringify(data)
