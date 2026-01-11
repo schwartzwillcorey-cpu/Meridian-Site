@@ -1680,11 +1680,11 @@ select option:checked {
               <div>
                 <label for="name">Name</label>
                 <input id="name" name="name" autocomplete="name" required />
-                </div>
+              </div>
               <div>
                 <label for="email">Email</label>
                 <input id="email" name="email" type="email" autocomplete="email" required />
-                </div>
+              </div>
             </div>
 
             <!-- Honeypot (hidden) -->
@@ -1693,61 +1693,41 @@ select option:checked {
               <input id="company_website" name="company_website" tabindex="-1" autocomplete="off" />
             </div>
 
-
             <div>
-              <label for="focus">Area of focus (optional)</label>
-              <select id="focus" name="focus">
-                <option value="">— Select one —</option>
-                <option>Lead intake &amp; routing</option>
-                <option>Internal ops workflows</option>
-                <option>Follow-ups &amp; notifications</option>
-                <option>Reporting &amp; visibility</option>
-                <option>Audit / cleanup</option>
+              <label for="focus">What do you need help with right now?</label>
+              <select id="focus" name="focus" required>
+                <option value="">Select one</option>
+                <option>Website that converts visitors</option>
+                <option>Lead capture and routing</option>
+                <option>Automated follow ups</option>
                 <option>Not sure yet</option>
               </select>
             </div>
 
             <div>
-              <label for="issues">What best describes what you’re looking to improve? (optional)</label>
-              <div class="checkbox-group" id="issues">
-                <label class="checkbox-option">
-                  <input type="checkbox" name="issues[]" value="Leads not being followed up" />
-                  <span>Leads not being followed up</span>
-                </label>
-                <label class="checkbox-option">
-                  <input type="checkbox" name="issues[]" value="Missed calls or slow response" />
-                  <span>Missed calls or slow response</span>
-                </label>
-                <label class="checkbox-option">
-                  <input type="checkbox" name="issues[]" value="Manual data entry" />
-                  <span>Manual data entry</span>
-                </label>
-                <label class="checkbox-option">
-                  <input type="checkbox" name="issues[]" value="Scheduling or booking issues" />
-                  <span>Scheduling or booking issues</span>
-                </label>
-                <label class="checkbox-option">
-                  <input type="checkbox" name="issues[]" value="Reporting or visibility problems" />
-                  <span>Reporting or visibility problems</span>
-                </label>
-                <label class="checkbox-option">
-                  <input type="checkbox" name="issues[]" value="Not sure yet" />
-                  <span>Not sure yet</span>
-                </label>
-              </div>
+              <label for="phone">Phone (optional — fastest way to reach you)</label>
+              <input id="phone" name="phone" type="tel" autocomplete="tel" />
             </div>
 
             <div>
-              <label for="notes">Anything you want us to know? (optional)</label>
-              <textarea id="notes" name="notes" placeholder="Share details, examples, links (optional)."></textarea>
+              <label for="urgency">How soon are you looking to get this live?</label>
+              <select id="urgency" name="urgency">
+                <option value="">Select one</option>
+                <option>ASAP (7 to 14 days)</option>
+                <option>This month</option>
+                <option>Just exploring</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="message">Message (optional)</label>
+              <textarea id="message" name="message" placeholder=""></textarea>
             </div>
 
             <div class="form-actions">
               <button class="btn btn-primary" id="submitBtn" type="submit">Send</button>
               <div class="form-status" id="formStatus" aria-live="polite"></div>
             </div>
-
-            <div class="note">We keep engagements focused. If you can share your current workflow and tools, we’ll move faster.</div>
           </form>
         </div>
       </div>
@@ -1869,9 +1849,6 @@ select option:checked {
    2) Paste the Catch Hook URL below
 */
 const ZAPIER_WEBHOOK_URL = "https://n8n.meridian-automations.com/webhook/a62fdfd5-0c7d-4cd4-bbb6-8fab6a715633";
-const FORM_SHARED_SECRET = "REPLACE_WITH_SECRET"; // set this in Zapier Filter/Code step and match here
-const MIN_SUBMIT_INTERVAL_MS = 5000;
-let lastSubmitTs = 0;
 
 (function(){
   const form = document.querySelector("#contactForm");
@@ -1880,22 +1857,6 @@ let lastSubmitTs = 0;
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-
-    if(status){
-      status.style.display = "none";
-      status.className = "form-status";
-      status.textContent = "";
-    }
-
-    const now = Date.now();
-    if(now - lastSubmitTs < MIN_SUBMIT_INTERVAL_MS){
-      if(status){
-        status.textContent = "Please wait a moment before submitting again.";
-        status.classList.add("error");
-        status.style.display = "block";
-      }
-      return;
-    }
 
     const honeypot = (form.company_website?.value || "").trim();
     if(honeypot){
@@ -1907,72 +1868,42 @@ let lastSubmitTs = 0;
       return;
     }
 
-    const issues = Array.from(form.querySelectorAll('input[name="issues[]"]:checked')).map(cb => cb.value);
-
-    const notesValue = (form.notes?.value || "").trim();
+    const btn = form.querySelector("#submitBtn");
+    btn.disabled = true;
+    btn.textContent = "Sending...";
 
     const payload = {
       name: (form.name?.value || "").trim(),
       email: (form.email?.value || "").trim(),
+      phone: (form.phone?.value || "").trim(),
       focus: (form.focus?.value || "").trim(),
-      issues,
-      notes: notesValue,
-      message: notesValue, // keep legacy key for downstream compatibility
-      page: window.location.pathname + window.location.hash,
-      userAgent: navigator.userAgent,
-      submissionId: (crypto.randomUUID ? crypto.randomUUID() : String(Date.now())),
-      formSecret: FORM_SHARED_SECRET
+      urgency: (form.urgency?.value || "").trim(),
+      message: (form.message?.value || "").trim(),
+      page: "/#contact"
     };
 
-    const errors = [];
-    if(!payload.name) errors.push("Please add your name.");
-    if(!payload.email) errors.push("Please add your email.");
-    else if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(payload.email)) errors.push("Please enter a valid email.");
-
-    if(errors.length){
-      if(status){
-        status.textContent = errors.join(" ");
-        status.classList.add("error");
-        status.style.display = "block";
-      }
-      const focusTarget = (!payload.name && form.name) ? form.name : (!payload.email && form.email) ? form.email : form.email;
-      if(focusTarget && typeof focusTarget.focus === "function") focusTarget.focus();
-      return;
-    }
-
     try{
-      const body = new URLSearchParams();
-      body.append("name", payload.name);
-      body.append("email", payload.email);
-      body.append("focus", payload.focus);
-      body.append("issues", payload.issues.join(", "));
-      payload.issues.forEach(issue => body.append("issues[]", issue));
-      body.append("notes", payload.notes);
-      body.append("message", payload.message);
-      body.append("page", payload.page);
-      body.append("userAgent", payload.userAgent);
-      body.append("submissionId", payload.submissionId);
-      body.append("formSecret", payload.formSecret);
-
-await fetch(ZAPIER_WEBHOOK_URL, {
+      const res = await fetch(ZAPIER_WEBHOOK_URL, {
         method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
-        body: body.toString()
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
       });
-form.reset();
-      if(status){
-        status.textContent = "Thank you - your note is in. We will reach out shortly with next steps.";
-        status.classList.add("success");
-        status.style.display = "block";
-      }
-      lastSubmitTs = now;
+
+      if(!res.ok) throw new Error("Network error");
+
+      // Replace form with success message
+      form.innerHTML = `
+        <div style="text-align: center; padding: 2rem 0;">
+          <h3 style="margin: 0 0 0.5rem 0; font-size: 1.5rem;">Message sent</h3>
+          <p style="margin: 0; color: rgba(242,239,234,0.75);">Thanks! We'll follow up by email or phone.</p>
+        </div>
+      `;
     }catch(err){
-      if(status){
-        status.textContent = "Submission failed. Please try again, or email us directly at meridianiautomations@gmail.com.";
-        status.classList.add("error");
-        status.style.display = "block";
-      }
+      console.error(err);
+      status.textContent = "Something went wrong. Please try email instead.";
+      status.className = "form-status error";
+      btn.disabled = false;
+      btn.textContent = "Send";
     }
   });
 })();

@@ -158,6 +158,10 @@
       color:var(--fg);
       transition:border-color 0.2s, background 0.2s;
     }
+    select option{
+      background:#1a1a1a;
+      color:#f2efe6;
+    }
     input:focus, select:focus, textarea:focus{
       outline:none;
       border-color:var(--focus);
@@ -413,59 +417,40 @@
         </div>
 
         <div>
-          <label for="focus">Area of focus (optional)</label>
-          <select id="focus" name="focus">
-            <option value="">— Select one —</option>
-            <option>Lead intake &amp; routing</option>
-            <option>Internal ops workflows</option>
-            <option>Follow-ups &amp; notifications</option>
-            <option>Reporting &amp; visibility</option>
-            <option>Audit / cleanup</option>
+          <label for="focus">What do you need help with right now?</label>
+          <select id="focus" name="focus" required>
+            <option value="">Select one</option>
+            <option>Website that converts visitors</option>
+            <option>Lead capture and routing</option>
+            <option>Automated follow ups</option>
             <option>Not sure yet</option>
           </select>
         </div>
 
         <div>
-          <label for="issues">What best describes what you're looking to improve? (optional)</label>
-          <div class="checkbox-group" id="issues">
-            <label class="checkbox-option">
-              <input type="checkbox" name="issues[]" value="Leads not being followed up" />
-              <span>Leads not being followed up</span>
-            </label>
-            <label class="checkbox-option">
-              <input type="checkbox" name="issues[]" value="Missed calls or slow response" />
-              <span>Missed calls or slow response</span>
-            </label>
-            <label class="checkbox-option">
-              <input type="checkbox" name="issues[]" value="Manual data entry" />
-              <span>Manual data entry</span>
-            </label>
-            <label class="checkbox-option">
-              <input type="checkbox" name="issues[]" value="Scheduling or booking issues" />
-              <span>Scheduling or booking issues</span>
-            </label>
-            <label class="checkbox-option">
-              <input type="checkbox" name="issues[]" value="Reporting or visibility problems" />
-              <span>Reporting or visibility problems</span>
-            </label>
-            <label class="checkbox-option">
-              <input type="checkbox" name="issues[]" value="Not sure yet" />
-              <span>Not sure yet</span>
-            </label>
-          </div>
+          <label for="phone">Phone (optional — fastest way to reach you)</label>
+          <input id="phone" name="phone" type="tel" autocomplete="tel" />
         </div>
 
         <div>
-          <label for="notes">Anything you want us to know? (optional)</label>
-          <textarea id="notes" name="notes" placeholder="Share details, examples, links (optional)."></textarea>
+          <label for="urgency">How soon are you looking to get this live?</label>
+          <select id="urgency" name="urgency">
+            <option value="">Select one</option>
+            <option>ASAP (7 to 14 days)</option>
+            <option>This month</option>
+            <option>Just exploring</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="message">Message (optional)</label>
+          <textarea id="message" name="message" placeholder=""></textarea>
         </div>
 
         <div class="form-actions">
           <button class="btn btn-primary" id="submitBtn" type="submit">Send</button>
           <div class="form-status" id="formStatus" aria-live="polite"></div>
         </div>
-
-        <div class="note">We keep engagements focused. If you can share your current workflow and tools, we'll move faster.</div>
       </form>
     </div>
   </main>
@@ -525,53 +510,50 @@ const WEBHOOK_URL = "https://n8n.meridian-automations.com/webhook/a62fdfd5-0c7d-
   form.addEventListener("submit", async function(e){
     e.preventDefault();
 
-    const btn = form.querySelector("#submitBtn");
     const honeypot = form.querySelector('[name="company_website"]').value;
     if(honeypot){
-      status.textContent = "Submission blocked.";
-      status.className = "form-status error";
+      return; // silently drop bot submission
+    }
+
+    if(!form.checkValidity()){
+      form.reportValidity();
       return;
     }
 
-    const fd = new FormData(form);
-    const data = {};
-    for(let [k,v] of fd.entries()){
-      if(k==="issues[]"){
-        if(!data.issues) data.issues=[];
-        data.issues.push(v);
-      }else{
-        data[k]=v;
-      }
-    }
-
+    const btn = form.querySelector("#submitBtn");
     btn.disabled = true;
     btn.textContent = "Sending...";
-    status.textContent = "";
-    status.className = "form-status";
+
+    const payload = {
+      name: (form.name?.value || "").trim(),
+      email: (form.email?.value || "").trim(),
+      phone: (form.phone?.value || "").trim(),
+      focus: (form.focus?.value || "").trim(),
+      urgency: (form.urgency?.value || "").trim(),
+      message: (form.message?.value || "").trim(),
+      page: "/contact"
+    };
 
     try{
       const res = await fetch(WEBHOOK_URL, {
         method:"POST",
         headers:{"Content-Type":"application/json"},
-        body: JSON.stringify(data)
+        body: JSON.stringify(payload)
       });
 
       if(!res.ok) throw new Error("Network error");
 
-      status.textContent = "Message sent! We'll respond soon.";
-      status.className = "form-status success";
-      form.reset();
-
-      setTimeout(()=>{
-        status.textContent = "";
-        status.className = "form-status";
-      }, 8000);
-
+      // Replace form with success message
+      form.innerHTML = `
+        <div style="text-align: center; padding: 2rem 0;">
+          <h3 style="margin: 0 0 0.5rem 0; font-size: 1.5rem;">Message sent</h3>
+          <p style="margin: 0; color: rgba(242,239,234,0.75);">Thanks! We'll follow up by email or phone.</p>
+        </div>
+      `;
     }catch(err){
       console.error(err);
       status.textContent = "Something went wrong. Please try email instead.";
       status.className = "form-status error";
-    }finally{
       btn.disabled = false;
       btn.textContent = "Send";
     }
