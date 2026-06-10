@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-YJW7TMQHYD"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-YJW7TMQHYD');
+  </script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0F0F12" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: https://www.googletagmanager.com https://www.google-analytics.com; font-src 'self' https://fonts.gstatic.com; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; connect-src https://n8n.meridian-automations.com https://www.google-analytics.com https://analytics.google.com; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+  <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <title>Privacy Policy — Meridian</title>
+  <meta name="description" content="Meridian's privacy policy — how we collect, use, and protect your information." />
+  <style>
+    :root{
+      --bg:#0F0F12;
+      --fg:#F2EFEA;
+      --muted:rgba(242,239,234,0.72);
+      --muted2:rgba(242,239,234,0.56);
+      --gold:#C9A24D;
+      --goldSoft:rgba(201,162,77,0.22);
+      --border:rgba(242,239,234,0.10);
+      --border2:rgba(242,239,234,0.06);
+      --radius:10px;
+      --max:1120px;
+      --serif: ui-serif, Georgia, "Times New Roman", Times, serif;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      --focus: rgba(201,162,77,0.55);
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth; min-height:100%;}
+    body{
+      margin:0;
+      font-family:var(--sans);
+      background:var(--bg);
+      color:var(--fg);
+      text-rendering:optimizeLegibility;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      background-image:
+        radial-gradient(900px 520px at 12% 8%, rgba(201,162,77,0.05), transparent 60%),
+        radial-gradient(820px 520px at 88% 18%, rgba(255,255,255,0.04), transparent 62%),
+        linear-gradient(to bottom, rgba(255,255,255,0.02), transparent 18%),
+        repeating-linear-gradient(0deg, rgba(255,255,255,0.012), rgba(255,255,255,0.012) 1px, transparent 1px, transparent 10px);
+      background-attachment:fixed;
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+    }
+
+    a{color:inherit; text-decoration:none;}
+    a:hover{color:var(--fg);}
+
+    .header{
+      position:relative;
+      z-index:100;
+      background:rgba(15,15,18,0.80);
+      backdrop-filter:blur(16px);
+      border-bottom:1px solid var(--border);
+    }
+    .header-inner{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:18px 24px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+    }
+    .logo img{
+      height:32px;
+      width:auto;
+      vertical-align:middle;
+    }
+    .back-link{
+      font-size:0.875rem;
+      color:var(--muted);
+      letter-spacing:0.06em;
+      transition:color 0.15s;
+    }
+    .back-link:hover{color:var(--fg);}
+
+    main{
+      flex:1;
+      padding:72px 24px 80px;
+    }
+    .container{
+      max-width:740px;
+      margin:0 auto;
+      width:100%;
+    }
+
+    .page-eyebrow{
+      font-size:11px;
+      letter-spacing:0.18em;
+      text-transform:uppercase;
+      color:rgba(201,162,77,0.85);
+      margin-bottom:14px;
+    }
+    h1{
+      font-family:var(--serif);
+      font-size:clamp(2rem, 4vw, 2.8rem);
+      font-weight:600;
+      letter-spacing:-0.02em;
+      line-height:1.15;
+      margin:0 0 10px;
+    }
+    .page-meta{
+      font-size:0.9rem;
+      color:var(--muted2);
+      margin:0 0 48px;
+    }
+
+    .doc-section{
+      margin-bottom:40px;
+      padding-bottom:40px;
+      border-bottom:1px solid var(--border2);
+    }
+    .doc-section:last-child{
+      border-bottom:none;
+      margin-bottom:0;
+    }
+
+    h2{
+      font-family:var(--serif);
+      font-size:1.25rem;
+      font-weight:600;
+      margin:0 0 14px;
+      color:var(--fg);
+    }
+    p{
+      margin:0 0 14px;
+      color:var(--muted);
+      line-height:1.75;
+      font-size:0.975rem;
+    }
+    p:last-child{margin-bottom:0;}
+    ul{
+      margin:0 0 14px;
+      padding-left:20px;
+      color:var(--muted);
+      line-height:1.75;
+      font-size:0.975rem;
+    }
+    ul li{margin-bottom:6px;}
+    strong{color:var(--fg); font-weight:600;}
+    a.inline{color:rgba(201,162,77,0.88); text-decoration:underline; text-decoration-color:rgba(201,162,77,0.35);}
+    a.inline:hover{color:var(--fg);}
+
+    footer{
+      border-top:1px solid var(--border);
+      padding:48px 24px 32px;
+      background:rgba(0,0,0,0.20);
+    }
+    .footer-grid{
+      max-width:var(--max);
+      margin:0 auto 36px;
+      display:grid;
+      grid-template-columns:1fr 1fr 1fr;
+      gap:48px;
+    }
+    .footer-brand{display:flex;flex-direction:column;gap:12px;}
+    .footer-logo{height:22px;width:auto;opacity:0.92;display:block;margin:0 0 8px;}
+    .footer-tagline{font-size:0.92rem;line-height:1.6;color:var(--muted2);margin:0;max-width:280px;}
+    .footer-nav{display:flex;flex-direction:column;gap:10px;}
+    .footer-nav a{color:var(--muted);font-size:0.92rem;transition:color 0.15s;}
+    .footer-nav a:hover{color:var(--fg);}
+    .footer-label{font-size:0.8rem;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted2);margin-bottom:8px;}
+    .footer-contact{display:flex;flex-direction:column;gap:6px;}
+    .footer-email{color:rgba(201,162,77,0.88);font-size:0.92rem;}
+    .footer-email:hover{color:var(--fg);}
+    .footer-meta{font-size:0.875rem;color:var(--muted2);}
+    .footer-bottom{max-width:var(--max);margin:0 auto;border-top:1px solid var(--border2);padding-top:20px;}
+    .footer-legal{display:flex;flex-wrap:wrap;gap:10px;align-items:center;font-size:0.875rem;color:var(--muted2);}
+    .footer-legal a{color:var(--muted2);transition:color 0.15s;}
+    .footer-legal a:hover{color:var(--fg);}
+    .dot{opacity:0.5;}
+
+    @media(max-width:768px){
+      .footer-grid{grid-template-columns:1fr;gap:28px;}
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <a href="/" class="logo">
+        <img src="assets/meridian-wordmark.png" alt="Meridian" />
+      </a>
+      <a href="/" class="back-link">← Back to home</a>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <div class="page-eyebrow">Legal</div>
+      <h1>Privacy Policy</h1>
+      <p class="page-meta">Last updated: June 2025</p>
+
+      <div class="doc-section">
+        <h2>Overview</h2>
+        <p>Meridian ("we," "us," or "our") operates the website at <strong>meridian-automations.com</strong>. This Privacy Policy explains what information we collect when you visit or contact us, how we use it, and the choices you have.</p>
+        <p>By using this site, you agree to the practices described in this policy. If you do not agree, please do not use the site.</p>
+      </div>
+
+      <div class="doc-section">
+        <h2>Information We Collect</h2>
+        <p><strong>Information you provide directly.</strong> When you submit the contact form on this site, we collect the information you enter, which may include:</p>
+        <ul>
+          <li>Your name</li>
+          <li>Email address</li>
+          <li>Phone number (optional)</li>
+          <li>Details about your project or inquiry</li>
+        </ul>
+        <p><strong>Information collected automatically.</strong> We use Google Analytics to understand how visitors use this site. This service may collect standard browser data such as your IP address (anonymized), browser type, pages visited, and time spent on pages. This data is aggregated and not personally identifiable.</p>
+        <p>We do not use cookies of our own beyond what third-party services (like Google Analytics) set. We do not use tracking pixels, fingerprinting, or behavioral advertising technologies.</p>
+      </div>
+
+      <div class="doc-section">
+        <h2>How We Use Your Information</h2>
+        <p>We use the information you submit through the contact form to:</p>
+        <ul>
+          <li>Respond to your inquiry</li>
+          <li>Discuss your project needs and next steps</li>
+          <li>Communicate about services you've requested</li>
+        </ul>
+        <p>We use analytics data to improve the site's content and performance.</p>
+        <p>We do not use your information for advertising, profiling, or any purpose beyond responding to your request and delivering the services you engage us for.</p>
+      </div>
+
+      <div class="doc-section">
+        <h2>How We Share Your Information</h2>
+        <p>We do not sell, rent, or share your personal information with third parties for their own marketing purposes.</p>
+        <p>Your contact form submissions are transmitted to our internal systems via a secure webhook. We may use professional tools (email, project management software) to manage your inquiry — these tools are bound by their own privacy policies and are not permitted to use your data for independent purposes.</p>
+        <p>We may disclose information if required by law or to protect the rights and safety of Meridian or others.</p>
+      </div>
+
+      <div class="doc-section">
+        <h2>Data Retention</h2>
+        <p>We retain contact form submissions for as long as necessary to manage your inquiry and any resulting project engagement. If you'd like your information deleted, contact us at <a class="inline" href="mailto:meridianaiautomations@gmail.com">meridianaiautomations@gmail.com</a> and we will remove it promptly.</p>
+      </div>
+
+      <div class="doc-section">
+        <h2>Third-Party Services</h2>
+        <p>This site uses the following third-party services:</p>
+        <ul>
+          <li><strong>Google Analytics</strong> — website usage analytics. <a class="inline" href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google's Privacy Policy</a></li>
+          <li><strong>n8n (self-hosted)</strong> — processes contact form submissions and routes them to our team</li>
+        </ul>
+        <p>These services operate under their own terms and privacy policies. We have chosen them carefully and do not authorize them to use your data beyond the purposes described here.</p>
+      </div>
+
+      <div class="doc-section">
+        <h2>Your Rights</h2>
+        <p>You have the right to:</p>
+        <ul>
+          <li>Request access to any personal data we hold about you</li>
+          <li>Ask us to correct inaccurate data</li>
+          <li>Request deletion of your personal data</li>
+          <li>Opt out of any future communications from us</li>
+        </ul>
+        <p>To exercise any of these rights, email us at <a class="inline" href="mailto:meridianaiautomations@gmail.com">meridianaiautomations@gmail.com</a>.</p>
+      </div>
+
+      <div class="doc-section">
+        <h2>Children's Privacy</h2>
+        <p>This site is not directed at children under 13. We do not knowingly collect personal information from children. If you believe a child has submitted information to us, contact us and we will delete it.</p>
+      </div>
+
+      <div class="doc-section">
+        <h2>Changes to This Policy</h2>
+        <p>We may update this policy from time to time. The "Last updated" date at the top of this page reflects the most recent revision. Continued use of the site after changes constitutes your acceptance of the updated policy.</p>
+      </div>
+
+      <div class="doc-section">
+        <h2>Contact</h2>
+        <p>Questions about this policy? Reach us at <a class="inline" href="mailto:meridianaiautomations@gmail.com">meridianaiautomations@gmail.com</a>.</p>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <img class="footer-logo" src="assets/meridian-wordmark.png" alt="Meridian" />
+        <p class="footer-tagline">Workflow automation built for clarity, reliability, and time returned.</p>
+      </div>
+
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <a href="/#services">Services</a>
+        <a href="/#process">Process</a>
+        <a href="/#about">About</a>
+        <a href="/#proof">Proof</a>
+        <a href="/#faq">FAQ</a>
+        <a href="/contact.html">Contact</a>
+      </nav>
+
+      <div class="footer-contact">
+        <div class="footer-label">Contact</div>
+        <a class="footer-email" href="mailto:meridianaiautomations@gmail.com">meridianaiautomations@gmail.com</a>
+        <div class="footer-meta">Response within 1—2 business days.</div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="footer-legal">
+        <span>© <span id="year"></span> Meridian</span>
+        <span class="dot">•</span>
+        <a href="/privacy.html">Privacy Policy</a>
+        <span class="dot">•</span>
+        <a href="/terms.html">Terms &amp; Conditions</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

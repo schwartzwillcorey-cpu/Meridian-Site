@@ -434,7 +434,163 @@ Added:
       text-transform:uppercase;
     }
 
-    /* Process timeline */
+    /* NEW: Enhanced service cards with mockups */
+    .services-grid{
+      margin-top:40px;
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap:24px;
+    }
+    @media (max-width: 960px){
+      .services-grid{grid-template-columns: 1fr;}
+    }
+
+    .service-card{
+      position:relative;
+      padding:0;
+      border-radius:20px;
+      border:1px solid rgba(255,255,255,0.08);
+      background: radial-gradient(ellipse 140% 100% at 50% 0%, rgba(255,255,255,0.04), rgba(0,0,0,0.22));
+      box-shadow: 0 24px 70px rgba(0,0,0,0.40);
+      overflow:hidden;
+      transition: transform 280ms ease, border-color 280ms ease, box-shadow 280ms ease;
+      opacity: 0;
+      transform: translateY(24px);
+      animation: serviceCardFadeIn 0.6s ease forwards;
+    }
+    .service-card:nth-child(1){ animation-delay: 0.1s; }
+    .service-card:nth-child(2){ animation-delay: 0.2s; }
+    .service-card:nth-child(3){ animation-delay: 0.3s; }
+    .service-card:nth-child(4){ animation-delay: 0.4s; }
+
+    @keyframes serviceCardFadeIn{
+      to{
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .service-card::before{
+      content:"";
+      position:absolute;
+      top:0;
+      left:0;
+      right:0;
+      height:3px;
+      background: linear-gradient(90deg, rgba(201,162,77,0), rgba(201,162,77,0.65), rgba(201,162,77,0));
+      opacity:0;
+      transition: opacity 280ms ease;
+    }
+    .service-card:hover{
+      transform: translateY(-6px);
+      border-color: rgba(201,162,77,0.30);
+      box-shadow: 0 32px 90px rgba(0,0,0,0.50), 0 0 0 1px rgba(201,162,77,0.10) inset;
+    }
+    .service-card:hover::before{
+      opacity:1;
+    }
+
+    /* Service card mockup area */
+    .service-mockup{
+      position:relative;
+      height:160px;
+      background: linear-gradient(180deg, rgba(201,162,77,0.05), rgba(0,0,0,0.18));
+      border-bottom:1px solid rgba(255,255,255,0.06);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+    }
+    .service-mockup svg{
+      width:100%;
+      height:100%;
+      opacity:0.88;
+      transition: transform 400ms ease, opacity 280ms ease;
+    }
+    .service-card:hover .service-mockup svg{
+      transform: scale(1.04);
+      opacity:1;
+    }
+
+    /* Service card content */
+    .service-content{
+      padding:24px 26px 28px;
+    }
+    .service-header{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      margin-bottom:14px;
+    }
+    .service-icon{
+      width:46px;
+      height:46px;
+      border-radius:12px;
+      background: linear-gradient(135deg, rgba(201,162,77,0.18), rgba(201,162,77,0.06));
+      border:1px solid rgba(201,162,77,0.30);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-shrink:0;
+      transition: transform 280ms ease, border-color 280ms ease;
+    }
+    .service-card:hover .service-icon{
+      transform: scale(1.08);
+      border-color: rgba(201,162,77,0.55);
+    }
+    .service-icon svg{
+      width:22px;
+      height:22px;
+      color:rgba(201,162,77,0.92);
+    }
+    .service-card .service-title{
+      margin:0;
+      font-size:15px;
+      letter-spacing:0.10em;
+      text-transform:uppercase;
+      color:var(--fg);
+    }
+    .service-card .service-desc{
+      margin:0 0 16px 0;
+      color:var(--muted);
+      font-size:15px;
+      line-height:1.65;
+    }
+    .service-card .service-list{
+      margin:0 0 18px 0;
+      padding:0;
+      list-style:none;
+      display:grid;
+      gap:8px;
+    }
+    .service-card .service-list li{
+      position:relative;
+      padding-left:18px;
+      color:var(--muted2);
+      font-size:14px;
+      line-height:1.5;
+    }
+    .service-card .service-list li::before{
+      content:"";
+      position:absolute;
+      left:0;
+      top:0.6em;
+      width:6px;
+      height:1px;
+      background:rgba(201,162,77,0.70);
+    }
+    .service-card .service-meta{
+      margin-top:auto;
+      padding-top:16px;
+      border-top:1px solid rgba(255,255,255,0.06);
+      font-size:11px;
+      color:rgba(242,239,234,0.55);
+      letter-spacing:0.05em;
+      text-transform:uppercase;
+      line-height:1.5;
+    }
+
+    /* Process timeline (legacy - keeping for reference) */
     .timeline{
       margin-top:34px;
       display:grid;
@@ -479,6 +635,127 @@ Added:
     }
     @media (max-width:640px){
       .step{grid-template-columns: 52px 1fr}
+    }
+
+    /* NEW: Process cards (visual style) */
+    .process-grid{
+      margin-top:40px;
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap:20px;
+    }
+    @media (max-width: 1080px){
+      .process-grid{grid-template-columns: repeat(2, 1fr);}
+    }
+    @media (max-width: 640px){
+      .process-grid{grid-template-columns: 1fr;}
+    }
+
+    .process-card{
+      position:relative;
+      padding:28px 24px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,0.08);
+      background: radial-gradient(ellipse 120% 100% at 50% 0%, rgba(255,255,255,0.04), rgba(0,0,0,0.20));
+      box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+      transition: transform 200ms ease, border-color 200ms ease, box-shadow 200ms ease;
+      overflow:hidden;
+    }
+    .process-card::before{
+      content:"";
+      position:absolute;
+      top:0;
+      left:0;
+      right:0;
+      height:3px;
+      background: linear-gradient(90deg, rgba(201,162,77,0), rgba(201,162,77,0.6), rgba(201,162,77,0));
+      opacity:0;
+      transition: opacity 200ms ease;
+    }
+    .process-card:hover{
+      transform: translateY(-4px);
+      border-color: rgba(201,162,77,0.35);
+      box-shadow: 0 28px 80px rgba(0,0,0,0.45), 0 0 0 1px rgba(201,162,77,0.12) inset;
+    }
+    .process-card:hover::before{
+      opacity:1;
+    }
+
+    .process-icon{
+      width:56px;
+      height:56px;
+      border-radius:14px;
+      background: linear-gradient(135deg, rgba(201,162,77,0.15), rgba(201,162,77,0.05));
+      border:1px solid rgba(201,162,77,0.25);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      margin-bottom:18px;
+    }
+    .process-icon svg{
+      width:26px;
+      height:26px;
+      color:rgba(201,162,77,0.9);
+    }
+
+    .process-num{
+      position:absolute;
+      top:20px;
+      right:20px;
+      font-family:var(--serif);
+      font-size:14px;
+      color:rgba(201,162,77,0.55);
+      font-weight:600;
+    }
+
+    .process-card h4{
+      margin:0 0 10px 0;
+      font-size:17px;
+      font-weight:650;
+      color:var(--fg);
+      letter-spacing:0.01em;
+    }
+
+    .process-card p{
+      margin:0 0 16px 0;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.6;
+    }
+
+    .process-outputs{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+    }
+    .process-outputs span{
+      padding:6px 10px;
+      border-radius:8px;
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.06);
+      font-size:11px;
+      color:rgba(242,239,234,0.65);
+      letter-spacing:0.04em;
+      text-transform:uppercase;
+    }
+
+    /* Process connector line (desktop only) */
+    .process-connector{
+      display:none;
+    }
+    @media (min-width: 1081px){
+      .process-connector{
+        display:block;
+        position:absolute;
+        top:50%;
+        right:-22px;
+        width:24px;
+        height:2px;
+        background: linear-gradient(90deg, rgba(201,162,77,0.4), rgba(201,162,77,0.1));
+      }
+      .process-card:last-child .process-connector{
+        display:none;
+      }
     }
 
     /* Proof diagram */
@@ -1172,53 +1449,234 @@ select option:checked {
           <h2>What we do</h2>
           <p class="section-lead">Websites and automation systems that save time, reduce mistakes, and keep teams aligned.</p>
 
-          <div class="grid cols-2">
-            <article class="card">
-              <h3>Websites that convert</h3>
-              <p>Fast-loading, well-structured sites with clear messaging and straightforward conversion paths. Built to be readable, maintainable, and easy to update.</p>
-              <ul>
-                <li>Brand + layout polish</li>
-                <li>SEO‑ready structure</li>
-                <li>Lead capture + routing</li>
-              </ul>
-              <div class="meta">Deliverables: site build/refresh · copy refinement · analytics‑ready setup</div>
+          <div class="services-grid">
+            <!-- Service 1: Websites -->
+            <article class="service-card">
+              <div class="service-mockup">
+                <svg viewBox="0 0 400 160" fill="none" preserveAspectRatio="xMidYMid slice">
+                  <!-- Browser chrome -->
+                  <rect x="40" y="20" width="320" height="120" rx="8" fill="rgba(0,0,0,0.3)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+                  <circle cx="58" cy="32" r="4" fill="rgba(255,100,100,0.6)"/>
+                  <circle cx="72" cy="32" r="4" fill="rgba(255,200,100,0.6)"/>
+                  <circle cx="86" cy="32" r="4" fill="rgba(100,255,100,0.6)"/>
+                  <rect x="100" y="28" width="200" height="10" rx="5" fill="rgba(255,255,255,0.08)"/>
+                  <!-- Page content mockup -->
+                  <rect x="52" y="48" width="120" height="8" rx="2" fill="rgba(201,162,77,0.5)"/>
+                  <rect x="52" y="62" width="180" height="5" rx="1" fill="rgba(255,255,255,0.15)"/>
+                  <rect x="52" y="72" width="160" height="5" rx="1" fill="rgba(255,255,255,0.10)"/>
+                  <rect x="52" y="82" width="140" height="5" rx="1" fill="rgba(255,255,255,0.08)"/>
+                  <!-- CTA button -->
+                  <rect x="52" y="96" width="70" height="20" rx="4" fill="rgba(201,162,77,0.35)" stroke="rgba(201,162,77,0.5)" stroke-width="1"/>
+                  <!-- Side image placeholder -->
+                  <rect x="260" y="48" width="88" height="68" rx="4" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+                  <path d="M280 90 L290 78 L305 95 L320 75 L335 90" stroke="rgba(201,162,77,0.4)" stroke-width="1.5" fill="none"/>
+                  <circle cx="330" cy="62" r="8" fill="rgba(201,162,77,0.2)"/>
+                </svg>
+              </div>
+              <div class="service-content">
+                <div class="service-header">
+                  <div class="service-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="3" y="3" width="18" height="18" rx="2"/>
+                      <path d="M3 9h18"/>
+                      <path d="M9 21V9"/>
+                    </svg>
+                  </div>
+                  <h3 class="service-title">Websites that convert</h3>
+                </div>
+                <p class="service-desc">Fast-loading, well-structured sites with clear messaging and straightforward conversion paths.</p>
+                <ul class="service-list">
+                  <li>Brand + layout polish</li>
+                  <li>SEO-ready structure</li>
+                  <li>Lead capture + routing</li>
+                </ul>
+                <div class="service-meta">Deliverables: site build · copy refinement · analytics setup</div>
+              </div>
             </article>
 
-            <article class="card">
-              <h3>Business automations</h3>
-              <p>We remove manual work: lead intake, follow-ups, notifications, and data syncing—without fragile glue.</p>
-              <ul>
-                <li>Form → sheet/CRM</li>
-                <li>SMS/email notifications</li>
-                <li>Optional follow‑up flows</li>
-              </ul>
-              <div class="meta">Deliverables: workflow map · safeguards · maintenance notes</div>
+            <!-- Service 2: Automations -->
+            <article class="service-card">
+              <div class="service-mockup">
+                <svg viewBox="0 0 400 160" fill="none" preserveAspectRatio="xMidYMid slice">
+                  <!-- Automation flow diagram -->
+                  <!-- Node 1: Form -->
+                  <rect x="40" y="60" width="60" height="40" rx="6" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+                  <rect x="50" y="72" width="40" height="4" rx="1" fill="rgba(255,255,255,0.3)"/>
+                  <rect x="50" y="80" width="30" height="4" rx="1" fill="rgba(255,255,255,0.15)"/>
+                  <rect x="50" y="88" width="35" height="4" rx="1" fill="rgba(255,255,255,0.15)"/>
+                  <!-- Arrow 1 -->
+                  <path d="M105 80 L135 80" stroke="rgba(201,162,77,0.6)" stroke-width="2" stroke-dasharray="4 2"/>
+                  <polygon points="135,76 143,80 135,84" fill="rgba(201,162,77,0.6)"/>
+                  <!-- Node 2: Process (highlighted) -->
+                  <rect x="148" y="55" width="70" height="50" rx="8" fill="rgba(201,162,77,0.12)" stroke="rgba(201,162,77,0.5)" stroke-width="1.5"/>
+                  <circle cx="183" cy="72" r="8" fill="rgba(201,162,77,0.3)" stroke="rgba(201,162,77,0.5)" stroke-width="1"/>
+                  <path d="M180 72 L183 75 L188 68" stroke="rgba(201,162,77,0.9)" stroke-width="1.5" fill="none"/>
+                  <rect x="158" y="86" width="50" height="3" rx="1" fill="rgba(201,162,77,0.4)"/>
+                  <rect x="163" y="92" width="40" height="3" rx="1" fill="rgba(201,162,77,0.25)"/>
+                  <!-- Arrow 2 -->
+                  <path d="M223 80 L253 80" stroke="rgba(201,162,77,0.6)" stroke-width="2" stroke-dasharray="4 2"/>
+                  <polygon points="253,76 261,80 253,84" fill="rgba(201,162,77,0.6)"/>
+                  <!-- Node 3: CRM -->
+                  <rect x="266" y="55" width="60" height="50" rx="6" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+                  <rect x="276" y="65" width="40" height="6" rx="2" fill="rgba(255,255,255,0.2)"/>
+                  <rect x="276" y="76" width="40" height="3" rx="1" fill="rgba(255,255,255,0.1)"/>
+                  <rect x="276" y="82" width="35" height="3" rx="1" fill="rgba(255,255,255,0.1)"/>
+                  <rect x="276" y="88" width="30" height="3" rx="1" fill="rgba(255,255,255,0.1)"/>
+                  <rect x="276" y="94" width="25" height="3" rx="1" fill="rgba(255,255,255,0.1)"/>
+                  <!-- Branch arrow down -->
+                  <path d="M183 105 L183 125" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
+                  <!-- Node 4: Notification -->
+                  <rect x="158" y="125" width="50" height="25" rx="4" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+                  <rect x="165" y="133" width="8" height="8" rx="2" fill="rgba(201,162,77,0.3)"/>
+                  <rect x="178" y="135" width="22" height="3" rx="1" fill="rgba(255,255,255,0.15)"/>
+                  <!-- Labels -->
+                  <text x="70" y="52" font-size="8" fill="rgba(255,255,255,0.4)" text-anchor="middle">Form</text>
+                  <text x="183" y="47" font-size="8" fill="rgba(201,162,77,0.7)" text-anchor="middle">Process</text>
+                  <text x="296" y="52" font-size="8" fill="rgba(255,255,255,0.4)" text-anchor="middle">CRM</text>
+                </svg>
+              </div>
+              <div class="service-content">
+                <div class="service-header">
+                  <div class="service-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="m3 8 4-4 4 4"/>
+                      <path d="M7 4v16"/>
+                      <path d="M11 12h4"/>
+                      <path d="M11 16h7"/>
+                      <path d="M11 20h10"/>
+                    </svg>
+                  </div>
+                  <h3 class="service-title">Business automations</h3>
+                </div>
+                <p class="service-desc">We remove manual work: lead intake, follow-ups, notifications, and data syncing.</p>
+                <ul class="service-list">
+                  <li>Form → sheet/CRM</li>
+                  <li>SMS/email notifications</li>
+                  <li>Optional follow-up flows</li>
+                </ul>
+                <div class="service-meta">Deliverables: workflow map · safeguards · maintenance notes</div>
+              </div>
             </article>
 
-            <article class="card">
-              <h3>AI workflows (practical)</h3>
-              <p>Used only where it reduces effort without introducing risk. AI handles summarizing, routing, and drafting — with clear rules and human approval where it matters.</p>
-              <ul>
-                <li>Human‑in‑the‑loop</li>
-                <li>Prompt + policy guardrails</li>
-                <li>Tool integrations</li>
-              </ul>
-              <div class="meta">Deliverables: prompt system · approval gates · logging</div>
+            <!-- Service 3: AI Workflows -->
+            <article class="service-card">
+              <div class="service-mockup">
+                <svg viewBox="0 0 400 160" fill="none" preserveAspectRatio="xMidYMid slice">
+                  <!-- AI brain/network visualization -->
+                  <!-- Central node -->
+                  <circle cx="200" cy="80" r="24" fill="rgba(201,162,77,0.15)" stroke="rgba(201,162,77,0.5)" stroke-width="1.5"/>
+                  <text x="200" y="84" font-size="12" fill="rgba(201,162,77,0.9)" text-anchor="middle" font-weight="600">AI</text>
+                  <!-- Orbiting dots with pulse animation -->
+                  <circle cx="200" cy="80" r="38" fill="none" stroke="rgba(201,162,77,0.15)" stroke-width="1" stroke-dasharray="3 3"/>
+                  <circle cx="200" cy="80" r="52" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+                  <!-- Input nodes -->
+                  <rect x="60" y="40" width="55" height="30" rx="4" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+                  <rect x="68" y="48" width="40" height="3" rx="1" fill="rgba(255,255,255,0.2)"/>
+                  <rect x="68" y="54" width="35" height="3" rx="1" fill="rgba(255,255,255,0.1)"/>
+                  <rect x="68" y="60" width="30" height="3" rx="1" fill="rgba(255,255,255,0.1)"/>
+                  <path d="M115 55 L165 72" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+
+                  <rect x="60" y="90" width="55" height="30" rx="4" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+                  <rect x="68" y="98" width="38" height="3" rx="1" fill="rgba(255,255,255,0.2)"/>
+                  <rect x="68" y="104" width="42" height="3" rx="1" fill="rgba(255,255,255,0.1)"/>
+                  <rect x="68" y="110" width="28" height="3" rx="1" fill="rgba(255,255,255,0.1)"/>
+                  <path d="M115 105 L165 88" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+                  <!-- Output nodes -->
+                  <rect x="285" y="35" width="60" height="35" rx="4" fill="rgba(201,162,77,0.08)" stroke="rgba(201,162,77,0.25)" stroke-width="1"/>
+                  <rect x="293" y="43" width="44" height="4" rx="1" fill="rgba(201,162,77,0.4)"/>
+                  <rect x="293" y="51" width="38" height="3" rx="1" fill="rgba(201,162,77,0.25)"/>
+                  <rect x="293" y="58" width="32" height="3" rx="1" fill="rgba(201,162,77,0.15)"/>
+                  <path d="M235 72 L285 52" stroke="rgba(201,162,77,0.35)" stroke-width="1.5"/>
+
+                  <rect x="285" y="90" width="60" height="35" rx="4" fill="rgba(201,162,77,0.08)" stroke="rgba(201,162,77,0.25)" stroke-width="1"/>
+                  <rect x="293" y="98" width="40" height="4" rx="1" fill="rgba(201,162,77,0.4)"/>
+                  <rect x="293" y="106" width="44" height="3" rx="1" fill="rgba(201,162,77,0.25)"/>
+                  <rect x="293" y="113" width="36" height="3" rx="1" fill="rgba(201,162,77,0.15)"/>
+                  <path d="M235 88 L285 108" stroke="rgba(201,162,77,0.35)" stroke-width="1.5"/>
+                  <!-- Human approval gate -->
+                  <rect x="245" y="68" width="28" height="24" rx="12" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+                  <circle cx="259" cy="75" r="4" fill="rgba(255,255,255,0.25)"/>
+                  <path d="M252 86 Q259 82 266 86" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" fill="none"/>
+                  <text x="259" y="100" font-size="6" fill="rgba(255,255,255,0.35)" text-anchor="middle">REVIEW</text>
+                </svg>
+              </div>
+              <div class="service-content">
+                <div class="service-header">
+                  <div class="service-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M12 2a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93"/>
+                      <path d="M8.56 9.93A4.001 4.001 0 0 1 12 2"/>
+                      <path d="M12 9v13"/>
+                      <path d="M9 22h6"/>
+                      <path d="M7 16h10"/>
+                    </svg>
+                  </div>
+                  <h3 class="service-title">AI workflows (practical)</h3>
+                </div>
+                <p class="service-desc">AI handles summarizing, routing, and drafting — with clear rules and human approval.</p>
+                <ul class="service-list">
+                  <li>Human-in-the-loop</li>
+                  <li>Prompt + policy guardrails</li>
+                  <li>Tool integrations</li>
+                </ul>
+                <div class="service-meta">Deliverables: prompt system · approval gates · logging</div>
+              </div>
             </article>
 
-            <article class="card">
-              <h3>Support + iteration</h3>
-              <p>Launch is not the end. We keep systems clean as your needs change.</p>
-              <ul>
-                <li>Fixes and small improvements</li>
-                <li>Monitoring + alerts</li>
-                <li>Change log + rollback plan</li>
-              </ul>
-              <div class="meta">Deliverables: weekly iteration option · change log · rollback plan</div>
+            <!-- Service 4: Support -->
+            <article class="service-card">
+              <div class="service-mockup">
+                <svg viewBox="0 0 400 160" fill="none" preserveAspectRatio="xMidYMid slice">
+                  <!-- Dashboard/monitoring visualization -->
+                  <!-- Main panel -->
+                  <rect x="50" y="25" width="300" height="110" rx="8" fill="rgba(0,0,0,0.25)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+                  <!-- Header -->
+                  <rect x="60" y="35" width="80" height="6" rx="2" fill="rgba(255,255,255,0.2)"/>
+                  <circle cx="320" cy="38" r="6" fill="rgba(100,200,100,0.4)" stroke="rgba(100,200,100,0.6)" stroke-width="1"/>
+                  <!-- Chart area -->
+                  <rect x="60" y="50" width="180" height="70" rx="4" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+                  <!-- Chart grid -->
+                  <path d="M70 60 L230 60 M70 75 L230 75 M70 90 L230 90 M70 105 L230 105" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+                  <!-- Upward trend line -->
+                  <path d="M75 105 L100 98 L125 100 L150 88 L175 82 L200 70 L225 58" stroke="rgba(201,162,77,0.7)" stroke-width="2" fill="none" stroke-linecap="round"/>
+                  <circle cx="225" cy="58" r="4" fill="rgba(201,162,77,0.9)"/>
+                  <!-- Side stats -->
+                  <rect x="250" y="50" width="90" height="22" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+                  <rect x="258" y="56" width="35" height="4" rx="1" fill="rgba(255,255,255,0.15)"/>
+                  <rect x="258" y="64" width="50" height="3" rx="1" fill="rgba(201,162,77,0.4)"/>
+
+                  <rect x="250" y="78" width="90" height="22" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+                  <rect x="258" y="84" width="40" height="4" rx="1" fill="rgba(255,255,255,0.15)"/>
+                  <rect x="258" y="92" width="45" height="3" rx="1" fill="rgba(100,200,100,0.4)"/>
+
+                  <rect x="250" y="106" width="90" height="22" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+                  <rect x="258" y="112" width="30" height="4" rx="1" fill="rgba(255,255,255,0.15)"/>
+                  <rect x="258" y="120" width="55" height="3" rx="1" fill="rgba(255,255,255,0.2)"/>
+                  <!-- Alert dot -->
+                  <circle cx="335" cy="115" r="3" fill="rgba(201,162,77,0.6)"/>
+                </svg>
+              </div>
+              <div class="service-content">
+                <div class="service-header">
+                  <div class="service-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                    </svg>
+                  </div>
+                  <h3 class="service-title">Support + iteration</h3>
+                </div>
+                <p class="service-desc">Launch is not the end. We keep systems clean as your needs change.</p>
+                <ul class="service-list">
+                  <li>Fixes and small improvements</li>
+                  <li>Monitoring + alerts</li>
+                  <li>Change log + rollback plan</li>
+                </ul>
+                <div class="service-meta">Deliverables: weekly iteration · change log · rollback plan</div>
+              </div>
             </article>
           </div>
 
-          <div class="cta-row" style="margin-top:28px;">
+          <div class="cta-row" style="margin-top:32px;">
             <span class="section-lead" style="margin:0; max-width:none;">Want a quick plan for your workflow?</span>
             <a class="btn btn-primary" href="#contact">Request a build outline</a>
           </div>
@@ -1233,55 +1691,92 @@ select option:checked {
           <h2>How we work</h2>
           <p class="section-lead">A clear process that reduces risk and keeps projects moving.</p>
 
-          <div class="timeline" aria-label="Engagement timeline">
-            <div class="step">
-              <div class="step-num">01</div>
-              <div>
-                <p class="step-title">Discovery + scope</p>
-                <p class="step-desc">We identify friction points, define outcomes, and map the system before we build.</p>
-                <div class="outputs">
-                  <span>Scope doc</span><span>System map</span><span>Timeline + milestones</span>
-                </div>
+          <div class="process-grid" aria-label="Engagement process">
+            <!-- Step 1: Discovery -->
+            <article class="process-card">
+              <span class="process-num">01</span>
+              <div class="process-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="11" cy="11" r="8"/>
+                  <path d="m21 21-4.35-4.35"/>
+                  <path d="M11 8v6"/>
+                  <path d="M8 11h6"/>
+                </svg>
               </div>
-            </div>
+              <h4>Discovery + Scope</h4>
+              <p>We identify friction points, define outcomes, and map the system before we build.</p>
+              <div class="process-outputs">
+                <span>Scope doc</span>
+                <span>System map</span>
+                <span>Timeline</span>
+              </div>
+              <div class="process-connector"></div>
+            </article>
 
-            <div class="step">
-              <div class="step-num">02</div>
-              <div>
-                <p class="step-title">Build + iterate</p>
-                <p class="step-desc">We implement in small, reviewable increments—so nothing drifts.</p>
-                <div class="outputs">
-                  <span>Working increments</span><span>Weekly checkpoints</span><span>Decisions log</span>
-                </div>
+            <!-- Step 2: Build -->
+            <article class="process-card">
+              <span class="process-num">02</span>
+              <div class="process-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m7 8 4 4-4 4"/>
+                  <path d="M11 16h6"/>
+                  <rect x="3" y="4" width="18" height="16" rx="2"/>
+                </svg>
               </div>
-            </div>
+              <h4>Build + Iterate</h4>
+              <p>We implement in small, reviewable increments—so nothing drifts.</p>
+              <div class="process-outputs">
+                <span>Increments</span>
+                <span>Checkpoints</span>
+                <span>Decisions log</span>
+              </div>
+              <div class="process-connector"></div>
+            </article>
 
-            <div class="step">
-              <div class="step-num">03</div>
-              <div>
-                <p class="step-title">Launch + harden</p>
-                <p class="step-desc">We validate edge cases, add safeguards, and ensure reliability.</p>
-                <div class="outputs">
-                  <span>QA checklist</span><span>Fallback behavior</span><span>Performance pass</span>
-                </div>
+            <!-- Step 3: Launch -->
+            <article class="process-card">
+              <span class="process-num">03</span>
+              <div class="process-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                  <polyline points="22,4 12,14.01 9,11.01"/>
+                </svg>
               </div>
-            </div>
+              <h4>Launch + Harden</h4>
+              <p>We validate edge cases, add safeguards, and ensure reliability.</p>
+              <div class="process-outputs">
+                <span>QA checklist</span>
+                <span>Fallbacks</span>
+                <span>Performance</span>
+              </div>
+              <div class="process-connector"></div>
+            </article>
 
-            <div class="step">
-              <div class="step-num">04</div>
-              <div>
-                <p class="step-title">Handoff + support</p>
-                <p class="step-desc">Clean documentation, simple ownership, and optional ongoing iteration.</p>
-                <div class="outputs">
-                  <span>Handoff doc</span><span>Credential checklist</span><span>Support options</span>
-                </div>
+            <!-- Step 4: Handoff -->
+            <article class="process-card">
+              <span class="process-num">04</span>
+              <div class="process-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                  <polyline points="14,2 14,8 20,8"/>
+                  <line x1="16" y1="13" x2="8" y2="13"/>
+                  <line x1="16" y1="17" x2="8" y2="17"/>
+                  <polyline points="10,9 9,9 8,9"/>
+                </svg>
               </div>
-            </div>
+              <h4>Handoff + Support</h4>
+              <p>Clean documentation, simple ownership, and optional ongoing iteration.</p>
+              <div class="process-outputs">
+                <span>Handoff doc</span>
+                <span>Credentials</span>
+                <span>Support</span>
+              </div>
+            </article>
           </div>
 
-          <ul class="bullets" style="margin-top:22px;">
+          <ul class="bullets" style="margin-top:32px;">
             <li>A system you can maintain.</li>
-            <li>Clear “what changed” notes.</li>
+            <li>Clear "what changed" notes.</li>
             <li>No mystery dependencies.</li>
           </ul>
         </div>
@@ -1770,7 +2265,9 @@ select option:checked {
     <div class="footer-legal">
       <span>© <span id="year"></span> Meridian</span>
       <span class="dot">•</span>
-      <span>Operator-grade systems</span>
+      <a href="/privacy.html">Privacy Policy</a>
+      <span class="dot">•</span>
+      <a href="/terms.html">Terms &amp; Conditions</a>
     </div>
   </div>
 </footer>
